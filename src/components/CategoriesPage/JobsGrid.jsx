@@ -23,15 +23,15 @@ const JobsGrid = () => {
 
   return (
     <div className="container mx-auto">
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} className="flex flex-wrap">
         {jobsCategories?.map((job) => (
-          <Col key={job.id} xs={24} sm={12} md={8} lg={8} xl={6}>
+          <Col key={job.id} xs={24} sm={12} md={8} lg={8} xl={6} className="flex">
             <Card
               hoverable
               onClick={() => {
                 navigate(`/detail/${job.congViec.id}`);
               }}
-              className="h-[550px]"
+              className="flex flex-col h-full"
               cover={
                 <img
                   alt={job.congViec.tenCongViec}
@@ -44,7 +44,7 @@ const JobsGrid = () => {
                 title={job.congViec.tenCongViec}
                 description={job.congViec.moTaNgan.slice(0, 50) + "..."}
               />
-              <div className="job-details mt-2 space-y-2">
+              <div className="job-details mt-2 space-y-2 flex-grow">
                 <Rate disabled defaultValue={job.congViec.saoCongViec} />
                 <p>${job.congViec.giaTien}</p>
                 <div className="space-x-2">

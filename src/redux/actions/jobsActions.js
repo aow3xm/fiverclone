@@ -1,4 +1,5 @@
 import {
+  layChiTietLoaiCongViec,
   layCongViecChiTiet,
   layCongViecTheoChiTietLoai,
   layCongViecTheoTen,
@@ -10,6 +11,7 @@ export const FETCH_JOBS_SUCCESS = "jobs/fetchJobsSuccess";
 export const FETCH_JOBS_CATEGORIES_SUCCESS = "jobs/fetchJobsCategoriesSuccess";
 export const FETCH_DETAIL_JOB_SUCCESS = "jobs/fetchDetailJobSuccess";
 export const FETCH_JOB_RESULT_SUCCESS = "jobs/fetchJobResultSuccess";
+export const FETCH_JOB_TITLE_SUCCESS = "jobs/fetchJobTitleSuccess";
 
 export const fetchJobsRequest = () => ({
   type: FETCH_JOBS_REQUEST,
@@ -34,7 +36,10 @@ export const fetchDetailJobSuccess = (job) => ({
   type: FETCH_DETAIL_JOB_SUCCESS,
   payload: job,
 });
-
+export const fetchJobTitleSucess = (job) => ({
+  type: FETCH_JOB_TITLE_SUCCESS,
+  payload: job,
+});
 export const fetchJobs = () => {
   return async (dispatch) => {
     dispatch(fetchJobsRequest());
@@ -46,6 +51,17 @@ export const fetchJobs = () => {
     }
   };
 };
+
+export const fetchJobTitle = (id) => {
+  return async (dispatch) => {
+    try {
+      const data = await layChiTietLoaiCongViec(id);
+      dispatch(fetchJobTitleSucess(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
 
 export const fetchJobsCategories = (id) => {
   return async (dispatch) => {

@@ -10,6 +10,7 @@ import AuthTemplate from "./templates/AuthTemplate/AuthTemplate";
 import SignUpPage from "./pages/AuthPages/SignUpPage";
 import SigninForm from "./components/Auth/SigninForm";
 import SignInPage from "./pages/AuthPages/SignInPage";
+import TitlePage from "./pages/TitlePage/TitlePage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="categories/:id" element={<CategoriesPage />} />
           <Route path="detail/:id" element={<DetailPage />} />
           <Route path="result/:slug" element={<ResultPage />} />
+          <Route path="title/:id" element={<TitlePage />} />
         </Route>
         <Route path="/auth" element={<AuthTemplate />}>
           <Route path="signup" element={<SignUpPage />} />

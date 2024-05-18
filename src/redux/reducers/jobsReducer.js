@@ -4,6 +4,7 @@ import {
   FETCH_JOBS_REQUEST,
   FETCH_JOBS_SUCCESS,
   FETCH_JOB_RESULT_SUCCESS,
+  FETCH_JOB_TITLE_SUCCESS,
 } from "../actions/jobsActions";
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   jobsCategories: [],
   jobDetail: [],
   jobResult: [],
+  jobTitle: {},
 };
 
 const jobsReducer = (state = initialState, action) => {
@@ -25,6 +27,8 @@ const jobsReducer = (state = initialState, action) => {
       return { ...state, jobDetail: action.payload };
     case FETCH_JOB_RESULT_SUCCESS:
       return { ...state, jobResult: action.payload };
+    case FETCH_JOB_TITLE_SUCCESS:
+      return { ...state, jobTitle: action.payload };
     default:
       return state;
   }

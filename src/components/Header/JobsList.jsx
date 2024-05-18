@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const JobsList = () => {
   const jobsList = useSelector((state) => state.jobs.jobsList);
   const navigate = useNavigate();
+
   const renderMenuItems = (job) =>
     job.dsNhomChiTietLoai?.map((nhomChiTiet) => (
       <Menu.ItemGroup key={nhomChiTiet.id} title={nhomChiTiet.tenNhom}>
@@ -28,6 +29,7 @@ const JobsList = () => {
             <Menu.SubMenu
               key={job.id}
               title={<Space>{job.tenLoaiCongViec}</Space>}
+              onTitleClick={() => navigate(`/title/${job.id}`)} // Add this line
             >
               {renderMenuItems(job)}
             </Menu.SubMenu>

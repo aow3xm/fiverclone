@@ -41,3 +41,14 @@ export const layCongViecTheoTen = async (tenCongViec) => {
     console.error(error);
   }
 };
+
+export const layChiTietLoaiCongViec = async (maChiTietLoai) => {
+  try {
+    const response = await http.get(
+      `cong-viec/lay-chi-tiet-loai-cong-viec/${maChiTietLoai}`
+    );
+    return response.data.content;
+  } catch (error) {
+    console.error(error);
+  }
+}
