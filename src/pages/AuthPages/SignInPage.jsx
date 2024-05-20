@@ -1,6 +1,5 @@
 import React from "react";
 import SigninForm from "../../components/Auth/SigninForm";
-
 const SignInPage = () => {
   return (
     <div className="container mx-auto flex flex-col lg:flex-row gap-10 lg:gap-20 justify-center items-center border rounded p-5 ">
