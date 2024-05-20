@@ -1,10 +1,9 @@
 import { http } from "./config";
 
-export const userSer = {
-  signIn: (data) => {
-    return http.post("/auth/signin", data)
-  },
-  signUp: (data) => {
-    return http.post("/auth/signup", data)
-  }
-}
+export const signIn = async (data) => {
+  try {
+    const response = await http.post("/api/auth/signin", {
+      data,
+    });
+  } catch (error) {}
+};

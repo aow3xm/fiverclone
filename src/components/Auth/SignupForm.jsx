@@ -1,39 +1,16 @@
-import React, { useState } from "react";
-import { Form, Input, Button, DatePicker, Radio, Checkbox, message } from "antd";
+import React from "react";
+import { Form, Input, Button, DatePicker, Radio, Checkbox } from "antd";
 import {
   UserOutlined,
   MailOutlined,
   LockOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { userSer } from "../../services/userService";
-import { useNavigate } from 'react-router-dom';
+
 const SignupForm = () => {
   const [form] = Form.useForm();
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
 
-  const onFinish = async (values) => {
-    try {
-      const { name, email, password, phone, birthday, gender } = values;
-      const formattedDateOfBirth = birthday.format("DD-MM-YYYY");
-      const data = await userSer.signUp({
-        name,
-        email,
-        password,
-        phone,
-        birthday: formattedDateOfBirth,
-        gender: gender === "male" ? true : false,
-      });
-      setSuccess(true);
-      message.success("Sign up successful! Redirecting to login page!");
-      setTimeout(() => {
-        navigate("/auth/signIn"); 
-      }, 3000); 
-    } catch (error) {
-      console.log("error: ", error);
-      message.error("Sign up failed. Please try again.");
-    }
+  const onFinish = (values) => {
     console.log("Received values of form: ", values);
   };
 
@@ -127,7 +104,7 @@ const SignupForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="birthday"
+          name="dateOfBirth"
           rules={[
             { required: true, message: "Please select your date of birth!" },
           ]}
@@ -136,8 +113,8 @@ const SignupForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="gender"
-          rules={[{ required: true, message: "Please select your gender!" }]}
+          name="sex"
+          rules={[{ required: true, message: "Please select your sex!" }]}
         >
           <Radio.Group>
             <Radio value="male">Male</Radio>

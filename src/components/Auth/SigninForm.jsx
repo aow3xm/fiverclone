@@ -1,20 +1,15 @@
 import React from "react";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { signInThunk } from "../../redux/userReducer/userThunk";
+import { NavLink } from "react-router-dom";
 
 const SigninForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [form] = Form.useForm();
-  const onFinish = async (values) => {
-    dispatch(signInThunk(values)).then(() => {
-      message.success("Logged in successfully!");
-      navigate("/");
-    });
+
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
   };
+
   const validateMessages = {
     required: "${label} is required!",
     types: {
@@ -56,7 +51,7 @@ const SigninForm = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Button type="dashed" danger>
+            <Button type="link">
               <NavLink to="/auth/signup">Or Sign up</NavLink>
             </Button>
           </Form.Item>

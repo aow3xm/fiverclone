@@ -8,6 +8,7 @@ import ResultPage from "./pages/ResultPage/ResultPage";
 import NotFound from "./components/NotFound";
 import AuthTemplate from "./templates/AuthTemplate/AuthTemplate";
 import SignUpPage from "./pages/AuthPages/SignUpPage";
+import SigninForm from "./components/Auth/SigninForm";
 import SignInPage from "./pages/AuthPages/SignInPage";
 import TitlePage from "./pages/TitlePage/TitlePage";
 const App = () => {
