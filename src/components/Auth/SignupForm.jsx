@@ -29,7 +29,7 @@ const SignupForm = () => {
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center">
-      <h1 className="font-bold text-2xl">Sign in to Fiverr</h1>
+      <h1 className="font-bold text-2xl">Sign up to Fiverr</h1>
       <Form
         form={form}
         name="signup"
