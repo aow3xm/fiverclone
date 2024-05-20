@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, DatePicker, Radio, Checkbox } from "antd";
 import {
   UserOutlined,
@@ -6,12 +7,38 @@ import {
   LockOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "../../redux/actions/userActions";
+import { userLocal } from "../../services/userLocal.js";
 
 const SignupForm = () => {
+  const auth = userLocal.get();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth) {
+      navigate("/");
+    }
+  }, [auth, navigate]);
+
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const formattedValues = {
+      id: 0,
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      phone: values.phone,
+      birthday: values.birthday.format("YYYY-MM-DD"),
+      gender: values.gender === "male",
+      role: "user",
+      skill: values.skill || [],
+      certification: values.certification || [],
+    };
+
+    dispatch(signup(formattedValues));
   };
 
   const validateMessages = {
@@ -104,7 +131,7 @@ const SignupForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="dateOfBirth"
+          name="birthday"
           rules={[
             { required: true, message: "Please select your date of birth!" },
           ]}
@@ -113,8 +140,8 @@ const SignupForm = () => {
         </Form.Item>
 
         <Form.Item
-          name="sex"
-          rules={[{ required: true, message: "Please select your sex!" }]}
+          name="gender"
+          rules={[{ required: true, message: "Please select your gender!" }]}
         >
           <Radio.Group>
             <Radio value="male">Male</Radio>

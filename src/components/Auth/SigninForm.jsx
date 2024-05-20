@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/actions/userActions";
+import { userLocal } from "../../services/userLocal";
 
 const SigninForm = () => {
-  const [form] = Form.useForm();
+  const auth = userLocal.get();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (auth) {
+      navigate("/");
+    }
+  }, [auth, navigate]);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    dispatch(login(values));
   };
 
   const validateMessages = {
