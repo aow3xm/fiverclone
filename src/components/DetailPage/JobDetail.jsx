@@ -39,7 +39,7 @@ const JobDetail = ({ faqData }) => {
   const job = jobDetail[0];
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto p-4">
       <Row gutter={[16, 16]}>
         <Col xs={24} md={16}>
           <Card
@@ -47,6 +47,7 @@ const JobDetail = ({ faqData }) => {
               <Image
                 src={job.congViec.hinhAnh}
                 alt={job.congViec.tenCongViec}
+                className="rounded-t-lg"
               />
             }
             actions={[
@@ -55,24 +56,27 @@ const JobDetail = ({ faqData }) => {
                 prefix="$"
                 value={job.congViec.giaTien}
                 key="giaTien"
+                className="text-center"
               />,
               <Statistic
                 title="Rate"
                 value={job.congViec.saoCongViec}
                 prefix={<StarOutlined />}
                 key="danhGia"
+                className="text-center"
               />,
             ]}
+            className="shadow-lg rounded-lg"
           >
             <Meta
               title={job.congViec.tenCongViec}
               description={
                 <div>
-                  <div>
+                  <div className="flex items-center">
                     <Rate defaultValue={job.congViec.saoCongViec} disabled />
-                    <span> {job.congViec.danhGia} rates</span>
+                    <span className="ml-2">{job.congViec.danhGia} rates</span>
                   </div>
-                  <p>{job.tenChiTietLoai}</p>
+                  <p className="mt-2">{job.tenChiTietLoai}</p>
                   <p>{job.congViec.moTaNgan}</p>
                 </div>
               }
@@ -80,7 +84,7 @@ const JobDetail = ({ faqData }) => {
             />
           </Card>
 
-          <Collapse defaultActiveKey={["1"]} bordered={false}>
+          <Collapse defaultActiveKey={["1"]} bordered={false} className="mt-4">
             <Panel header="About This Gig" key="1">
               <p>{job.congViec.moTa}</p>
             </Panel>
@@ -89,13 +93,13 @@ const JobDetail = ({ faqData }) => {
                 <Avatar size={"large"} src={job.avatar} />
                 <div className="flex flex-col">
                   <span className="font-bold">{job.tenNguoiTao}</span>
-                  <Button size="large">Contact me</Button>
+                  <Button size="large" className="mt-2">Contact me</Button>
                 </div>
               </div>
             </Panel>
           </Collapse>
 
-          <Collapse defaultActiveKey={["3"]} bordered={false}>
+          <Collapse defaultActiveKey={["3"]} bordered={false} className="mt-4">
             {faqData?.map((faq, index) => (
               <Panel header={faq.title} key={index}>
                 <p>{faq.content}</p>
@@ -104,20 +108,20 @@ const JobDetail = ({ faqData }) => {
           </Collapse>
         </Col>
         <Col xs={24} md={8}>
-          <div className="flex flex-col gap-2">
-            <div className=" rounded p-3 border border-black/10 space-y-3  font-bold">
+          <div className="flex flex-col gap-4">
+            <div className="rounded-lg p-4 border border-gray-200 shadow-sm space-y-3 font-bold">
               <h2 className="text-xl">{job.congViec.moTaNgan}</h2>
               <div className="flex justify-between items-center">
-                <div className="space-x-2">
+                <div className="flex items-center space-x-2">
                   <InfoCircleOutlined />
                   <span>14 Days Delivery</span>
                 </div>
-                <div className="space-x-2">
+                <div className="flex items-center space-x-2">
                   <UndoOutlined />
                   <span>Unlimited Revisions</span>
                 </div>
               </div>
-              <Button  type="primary" danger size="large" block>
+              <Button type="primary"  size="large" block>
                 <span className="font-bold">
                   Continue (${job.congViec.giaTien})
                 </span>

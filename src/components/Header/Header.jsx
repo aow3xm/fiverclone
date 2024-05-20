@@ -82,7 +82,7 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
           <nav className="header-nav order-3 md:order-2">
             <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
               <li>
-                <NavLink to="/home">Become a Seller</NavLink>
+                <NavLink to="#">Become a Seller</NavLink>
               </li>
               <li>
                 <NavLink to="/auth/signin">Sign In</NavLink>

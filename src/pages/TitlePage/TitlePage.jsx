@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Banner from "../../components/Title/Banner";
 
-import { data } from "./data";
+import { data, tags } from "./data";
+import Card from "../../components/Title/Card";
 const TitlePage = () => {
   return (
     <div>
       <Banner data={data} />
+      <Card data={tags} />
     </div>
   );
 };

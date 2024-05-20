@@ -28,9 +28,12 @@ const Banner = ({ data }) => {
         <h3 className="text-2xl font-semibold">
           Most popular in {jobTitle?.tenLoaiCongViec}
         </h3>
-        <div className="flex flex-wrap gap-2">
-          {data?.map((item) => (
-            <div className="rounded-lg border shadow-lg flex flex-row items-center gap-2 p-3">
+        <div className="flex flex-wrap gap-3 ">
+          {data?.map((item, index) => (
+            <div
+              key={index }
+              className="rounded-lg font-bold border shadow-lg flex flex-row items-center gap-2 p-4"
+            >
               <img className="w-14" src={item.image} alt={item.title} />
               {item.title}
             </div>
