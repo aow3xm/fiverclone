@@ -2,6 +2,8 @@
 import {
   FETCH_COMMENTS_REQUEST,
   FETCH_COMMENTS_SUCCESS,
+  POST_COMMENT_REQUEST,
+  POST_COMMENT_SUCCESS,
 } from "../actions/commentAction";
 
 const initialState = {
@@ -14,6 +16,13 @@ const commentsReducer = (state = initialState, action) => {
       return { ...state };
     case FETCH_COMMENTS_SUCCESS:
       return { ...state, commentsList: action.payload };
+    case POST_COMMENT_SUCCESS:
+      return {
+        ...state,
+        commentsList: [...state.commentsList, action.payload],
+      };
+    case POST_COMMENT_REQUEST:
+      return { ...state };
     default:
       return state;
   }

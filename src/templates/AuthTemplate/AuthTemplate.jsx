@@ -1,19 +1,26 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { initUserFromStorage } from "../../redux/actions/userActions";
+import { userLocal } from "../../services/userLocal";
 import PageFooter from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import {  useSelector } from "react-redux";
-
 
 const AuthTemplate = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (authState.user) {
-      navigate('/'); 
+    const user = userLocal.get();
+    if (user) {
+      dispatch(initUserFromStorage(user));
     }
-  }, [authState, navigate]);
+    if (authState.user) {
+      navigate('/');
+    }
+  }, [authState.user, dispatch, navigate]);
+
   return (
     <div>
       <Header />

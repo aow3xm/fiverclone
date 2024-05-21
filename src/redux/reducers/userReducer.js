@@ -1,4 +1,3 @@
-// reducers/authReducer.js
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -18,35 +17,20 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-      };
-    case LOGIN_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        user: action.payload,
-      };
-    case LOGIN_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
     case SIGNUP_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
+    case LOGIN_SUCCESS:
     case SIGNUP_SUCCESS:
       return {
         ...state,
         isLoading: false,
         user: action.payload,
       };
+    case LOGIN_FAILURE:
     case SIGNUP_FAILURE:
       return {
         ...state,

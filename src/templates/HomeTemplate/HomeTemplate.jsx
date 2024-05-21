@@ -12,7 +12,7 @@ const HomeTemplate = () => {
 
   useEffect(() => {
     const user = userLocal.get();
-    console.log(user)
+
     if (user) {
       dispatch(initUserFromStorage(user));
     }

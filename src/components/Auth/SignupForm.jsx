@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, DatePicker, Radio, Checkbox } from "antd";
 import {
@@ -7,22 +7,17 @@ import {
   LockOutlined,
   PhoneOutlined,
 } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signup } from "../../redux/actions/userActions";
-import { userLocal } from "../../services/userLocal.js";
+
 
 const SignupForm = () => {
-  const auth = userLocal.get();
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (auth) {
-      navigate("/");
-    }
-  }, [auth, navigate]);
-
-  const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
+
 
   const onFinish = (values) => {
     const formattedValues = {
@@ -38,7 +33,13 @@ const SignupForm = () => {
       certification: values.certification || [],
     };
 
-    dispatch(signup(formattedValues));
+    dispatch(signup(formattedValues))
+      .then(() => {
+        navigate('/auth/signin');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const validateMessages = {

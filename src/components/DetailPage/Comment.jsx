@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchComments } from "../../redux/actions/commentAction";
-import { List, Avatar, Input, Button, Rate, Pagination } from "antd";
-
+import { fetchComments, postComment } from "../../redux/actions/commentAction";
+import { List, Avatar, Input, Button, Rate, Pagination, message } from "antd";
+import { jwtDecode } from "jwt-decode";
+import moment from "moment";
 const { TextArea } = Input;
-
 const Comment = ({ maCongViec }) => {
   const dispatch = useDispatch();
   const commentsList = useSelector((state) => state.comments.commentsList);
   const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 5;
-
+  const user = useSelector((state) => state.auth.user);
   useEffect(() => {
     dispatch(fetchComments(maCongViec));
   }, [dispatch, maCongViec]);
@@ -20,18 +21,31 @@ const Comment = ({ maCongViec }) => {
     setComment(e.target.value);
   };
 
+  const handleRatingChange = (value) => {
+    setRating(value);
+  };
+
   const handleSubmitComment = () => {
+    if (!user) {
+      message.error("You must be signed in to comment");
+      return;
+    }
     if (comment.trim() !== "") {
+      const token = jwtDecode(user);
       const newComment = {
-        id: Date.now(),
-        ngayBinhLuan: new Date().toLocaleDateString("vi-VN"),
+        id: 0,
+        maCongViec,
+        maNguoiBinhLuan: token.id,
+        ngayBinhLuan: new Date().toISOString(),
         noiDung: comment,
-        saoBinhLuan: 0,
-        tenNguoiBinhLuan: "User",
-        avatar: "",
+        saoBinhLuan: rating,
       };
-      // dispatch(addComment(newComment));
+
+      dispatch(postComment(newComment, user)).then(() => {
+        dispatch(fetchComments(maCongViec));
+      });
       setComment("");
+      setRating(0);
     }
   };
 
@@ -60,9 +74,16 @@ const Comment = ({ maCongViec }) => {
                 <>
                   <div>{comment.noiDung}</div>
                   <div>
-                    <Rate disabled value={comment.saoBinhLuan !== 0 ? comment.saoBinhLuan : 5} />
+                    <Rate
+                      disabled
+                      value={
+                        comment.saoBinhLuan !== 0 ? comment.saoBinhLuan : 5
+                      }
+                    />
                     <span style={{ marginLeft: 8 }}>
-                      {comment.ngayBinhLuan}
+                      {moment(comment.ngayBinhLuan).format(
+                        "DD-MM-YYYY HH:mm:ss"
+                      )}
                     </span>
                   </div>
                 </>
@@ -71,7 +92,7 @@ const Comment = ({ maCongViec }) => {
           </List.Item>
         )}
       />
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
         <Pagination
           current={currentPage}
           pageSize={commentsPerPage}
@@ -86,6 +107,11 @@ const Comment = ({ maCongViec }) => {
           placeholder="Write a comment..."
           value={comment}
           onChange={handleCommentChange}
+        />
+        <Rate
+          value={rating}
+          onChange={handleRatingChange}
+          style={{ marginTop: 8 }}
         />
         <Button
           type="primary"

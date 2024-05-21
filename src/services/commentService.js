@@ -8,3 +8,17 @@ export const layDanhSachBinhLuan = async (maCongViec) => {
     return response.data.content;
   } catch (error) {}
 };
+
+export const themBinhLuan = async (binhLuan, token) => {
+  try {
+    const response = await http.post("/binh-luan", binhLuan, {
+      headers: {
+        'token': `${token}`
+      }
+    });
+    return response.data.content;
+  } catch (error) {
+
+    console.error(error);
+  }
+}
