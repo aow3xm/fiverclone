@@ -36,6 +36,7 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
 
   useEffect(() => {
     if (authState.user) {
+      console.log(authState)
       try {
         const token = authState.user;
         if (token && typeof token === 'string') {

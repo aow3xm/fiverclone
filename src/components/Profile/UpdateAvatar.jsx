@@ -1,15 +1,28 @@
 // src/components/UploadAvatar.js
-import React, { useState } from 'react';
-import { Upload, Avatar, Button, Card } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Upload, Avatar, Button } from 'antd';
 import { UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { uploadAvatar } from '../../redux/actions/userActions';
 
 const UploadAvatar = () => {
   const [imageUrl, setImageUrl] = useState(null);
+  const dispatch = useDispatch();
+  const info = useSelector((state) => state?.auth?.info);
+
+  useEffect(() => {
+    if (info && info.avatar) {
+      setImageUrl(info.avatar);
+    }
+  }, [info]);
 
   const handleChange = info => {
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => setImageUrl(imageUrl));
+      getBase64(info.file.originFileObj, imageUrl => {
+        setImageUrl(imageUrl);
+        dispatch(uploadAvatar(info.file.originFileObj));
+      });
     }
   };
 
