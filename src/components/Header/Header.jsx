@@ -1,18 +1,22 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import WithResponsive from "../../HOC/Responsive/WithResponsive";
-import Drawer from "./Drawer";
-import { useEffect, useState } from "react";
-import JobsList from "./JobsList";
-import { useDispatch } from "react-redux";
-import { fetchJobs } from "../../redux/actions/jobsActions";
+import React, { useEffect, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import WithResponsive from '../../HOC/Responsive/WithResponsive';
+import Drawer from './Drawer';
+import JobsList from './JobsList';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobs } from '../../redux/actions/jobsActions';
 
 const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
   const dispatch = useDispatch();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const authState = useSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(fetchJobs());
     const handleScroll = () => {
@@ -29,10 +33,28 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authState.user) {
+      try {
+        const token = authState.user;
+        if (token && typeof token === 'string') {
+          const decodedToken = jwtDecode(token);
+          setUserEmail(decodedToken.email);
+        } else {
+          console.error('Token is not a string or is undefined:', token);
+        }
+      } catch (error) {
+        console.error('Error decoding token:', error.message);
+      }
+    }
+  }, [authState]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     navigate(`/result/${search}`);
   };
+
   return (
     <header
       className={`${
@@ -84,14 +106,22 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
               <li>
                 <NavLink to="#">Become a Seller</NavLink>
               </li>
-              <li>
-                <NavLink to="/auth/signin">Sign In</NavLink>
-              </li>
-              <li>
-                <button className="px-4 py-1 rounded-sm border border-white shadow-md hover:bg-white hover:text-black duration-300">
-                  <NavLink to="/auth/signup">Join</NavLink>
-                </button>
-              </li>
+              {userEmail ? (
+                <li>
+                  <NavLink to="/profile">{userEmail}</NavLink>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <NavLink to="/auth/signin">Sign In</NavLink>
+                  </li>
+                  <li>
+                    <button className="px-4 py-1 rounded-sm border border-white shadow-md hover:bg-white hover:text-black duration-300">
+                      <NavLink to="/auth/signup">Join</NavLink>
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>

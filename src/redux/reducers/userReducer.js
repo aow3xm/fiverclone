@@ -1,3 +1,4 @@
+// reducers/authReducer.js
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -5,6 +6,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
+  INIT_USER_FROM_STORAGE,
 } from "../actions/userActions";
 
 const initialState = {
@@ -50,6 +52,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: action.payload,
+      };
+    case INIT_USER_FROM_STORAGE:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

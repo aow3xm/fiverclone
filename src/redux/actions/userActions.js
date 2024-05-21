@@ -1,5 +1,4 @@
 
-import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../../services/userService';
 import { message } from 'antd';
 import { userLocal } from '../../services/userLocal';
@@ -11,7 +10,7 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
-
+export const INIT_USER_FROM_STORAGE = 'INIT_USER_FROM_STORAGE';
 const signupRequest = () => ({
   type: SIGNUP_REQUEST,
 });
@@ -40,6 +39,10 @@ const loginFailure = (error) => ({
   payload: error,
 });
 
+export const initUserFromStorage = (user) => ({
+  type: INIT_USER_FROM_STORAGE,
+  payload: user,
+});
 export const login = (data) => {
   return async (dispatch) => {
     dispatch(loginRequest());
@@ -49,6 +52,7 @@ export const login = (data) => {
       dispatch(loginSuccess(user));
       message.success('Login Successful');
       userLocal.set(user.token)
+
     } catch (error) {
       dispatch(loginFailure(error.message));
       message.error('Login Failed');
@@ -63,6 +67,7 @@ export const signup = (data) => {
       const user = response.data.content;
       dispatch(signupSuccess(user));
       message.success('Signup Successful');
+
     } catch (error) {
       dispatch(signupFailure(error.message));
       message.error('Signup Failed');
