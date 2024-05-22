@@ -10,6 +10,8 @@ import {
   UPLOAD_AVATAR_REQUEST,
   UPLOAD_AVATAR_SUCCESS,
   UPLOAD_AVATAR_FAILURE,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 } from "../actions/userActions";
 
 const initialState = {
@@ -39,6 +41,19 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_FAILURE:
     case SIGNUP_FAILURE:
     case UPLOAD_AVATAR_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: null,
+        isLoading: false,
+        error: null,
+      };
+    case LOGOUT_FAILURE:
       return {
         ...state,
         isLoading: false,

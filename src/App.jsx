@@ -8,10 +8,10 @@ import ResultPage from "./pages/ResultPage/ResultPage";
 import NotFound from "./components/NotFound";
 import AuthTemplate from "./templates/AuthTemplate/AuthTemplate";
 import SignUpPage from "./pages/AuthPages/SignUpPage";
-import SigninForm from "./components/Auth/SigninForm";
 import SignInPage from "./pages/AuthPages/SignInPage";
 import TitlePage from "./pages/TitlePage/TitlePage";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import InfoUserPage from "./pages/Profile/InfoUserPage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -23,6 +23,7 @@ const App = () => {
           <Route path="result/:slug" element={<ResultPage />} />
           <Route path="title/:id" element={<TitlePage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="infoUser/:id" element={<InfoUserPage />} />
         </Route>
         <Route path="/auth" element={<AuthTemplate />}>
           <Route path="signup" element={<SignUpPage />} />

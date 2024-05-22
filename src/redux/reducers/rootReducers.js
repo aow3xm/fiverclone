@@ -6,7 +6,8 @@ import authReducer from "./userReducer";
 const rootReducer = combineReducers({
   jobs: jobsReducer,
   comments: commentsReducer,
-  auth: authReducer
+  auth: authReducer,
+  
 });
 
 export default rootReducer;

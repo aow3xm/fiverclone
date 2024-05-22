@@ -6,6 +6,8 @@ import Drawer from './Drawer';
 import JobsList from './JobsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJobs } from '../../redux/actions/jobsActions';
+import UserNavLogIn from './UserNavLogIn';
+import UserNavLogOut from './UserNavLogOut';
 
 const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +18,14 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
+  const {user} = useSelector((state) => state.auth);
+  const renderUserNav = () => {
+    if (user) {
+      return <UserNavLogIn />;
+    } else {
+      return <UserNavLogOut />;
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchJobs());
@@ -103,7 +113,8 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
           </div>
 
           <nav className="header-nav order-3 md:order-2">
-            <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
+            {renderUserNav()}
+            {/* <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
               <li>
                 <NavLink to="#">Become a Seller</NavLink>
               </li>
@@ -123,7 +134,7 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
                   </li>
                 </>
               )}
-            </ul>
+            </ul> */}
           </nav>
         </div>
       )}

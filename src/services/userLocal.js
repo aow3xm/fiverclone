@@ -1,6 +1,6 @@
 export const userLocal = {
-  set: (inforUser) => {
-    const json = JSON.stringify(inforUser);
+  set: (infoUser) => {
+    const json = JSON.stringify(infoUser);
     localStorage.setItem("USER_INFO", json);
   },
   get: () => {
@@ -10,5 +10,8 @@ export const userLocal = {
     } else {
       return null;
     }
+  },
+  delete: () => {
+    localStorage.removeItem("USER_INFO");
   },
 };

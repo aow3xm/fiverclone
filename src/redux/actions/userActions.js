@@ -1,10 +1,19 @@
-import { signIn, signUp, updateProfile, getUser, uploadAvatar as uploadAvatarService } from "../../services/userService";
+import {
+  signIn,
+  signUp,
+  updateProfile,
+  getUser,
+  uploadAvatar as uploadAvatarService,
+} from "../../services/userService";
 import { message } from "antd";
 import { userLocal } from "../../services/userLocal";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
@@ -17,12 +26,22 @@ const signupRequest = () => ({ type: SIGNUP_REQUEST });
 const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 const getUserSuccess = (user) => ({ type: GET_USER_INFO, payload: user });
 const uploadAvatarRequest = () => ({ type: UPLOAD_AVATAR_REQUEST });
-const uploadAvatarSuccess = (avatarUrl) => ({ type: UPLOAD_AVATAR_SUCCESS, payload: avatarUrl });
-const uploadAvatarFailure = (error) => ({ type: UPLOAD_AVATAR_FAILURE, payload: error });
+const uploadAvatarSuccess = (avatarUrl) => ({
+  type: UPLOAD_AVATAR_SUCCESS,
+  payload: avatarUrl,
+});
+const uploadAvatarFailure = (error) => ({
+  type: UPLOAD_AVATAR_FAILURE,
+  payload: error,
+});
 
 const loginRequest = () => ({ type: LOGIN_REQUEST });
 const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
 const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
+
+const logoutRequest = () => ({ type: LOGOUT_REQUEST });
+const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
+const logoutFailure = (error) => ({ type: LOGOUT_FAILURE, payload: error });
 export const initUserFromStorage = (user) => ({
   type: INIT_USER_FROM_STORAGE,
   payload: user,
@@ -92,8 +111,24 @@ export const uploadAvatar = (avatar) => {
       dispatch(uploadAvatarSuccess(avatarUrl));
       message.success("Upload Avatar Successful");
     } catch (error) {
-      const errorMessage = error.response?.data?.content || "Upload Avatar Failed";
+      const errorMessage =
+        error.response?.data?.content || "Upload Avatar Failed";
       dispatch(uploadAvatarFailure(errorMessage));
+      message.error(errorMessage);
+    }
+  };
+};
+
+export const logout = () => {
+  return async (dispatch) => {
+    dispatch(logoutRequest());
+    try {
+      userLocal.delete();
+      dispatch(logoutSuccess());
+      message.success("Logout Successful");
+    } catch (error) {
+      const errorMessage = error.message || "Logout Failed";
+      dispatch(logoutFailure(errorMessage));
       message.error(errorMessage);
     }
   };

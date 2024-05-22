@@ -16,8 +16,12 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { getUserInfo, initUserFromStorage, updateUser } from "../../redux/actions/userActions";
-import {jwtDecode} from "jwt-decode";
+import {
+  getUserInfo,
+  initUserFromStorage,
+  updateUser,
+} from "../../redux/actions/userActions";
+import { jwtDecode } from "jwt-decode";
 import { userLocal } from "../../services/userLocal";
 import { useNavigate } from "react-router-dom";
 
@@ -25,11 +29,11 @@ const { Title } = Typography;
 
 const UserUpdateForm = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state?.auth?.user);
   const info = useSelector((state) => state?.auth?.info);
+
+  const dispatch = useDispatch();
   const [token, setToken] = useState(null);
- 
+  const user = useSelector((state) => state?.auth?.user);
   useEffect(() => {
     if (user) {
       const jwt = jwtDecode(user);
@@ -52,8 +56,12 @@ const UserUpdateForm = () => {
       id: token.id,
       ...values,
       birthday: values.birthday.format("YYYY-MM-DD"),
-      skill: values.skill ? values.skill.split(",").map((skill) => skill.trim()) : [],
-      certification: values.certification ? values.certification.split(",").map((cert) => cert.trim()) : [],
+      skill: values.skill
+        ? values.skill.split(",").map((skill) => skill.trim())
+        : [],
+      certification: values.certification
+        ? values.certification.split(",").map((cert) => cert.trim())
+        : [],
     };
     dispatch(updateUser(token.id, formattedValues));
   };
@@ -114,7 +122,9 @@ const UserUpdateForm = () => {
           <Form.Item
             name="birthday"
             label="Birthday"
-            rules={[{ required: true, message: "Please select your date of birth!" }]}
+            rules={[
+              { required: true, message: "Please select your date of birth!" },
+            ]}
             style={{ flex: "1 1 45%" }}
           >
             <DatePicker style={{ width: "100%" }} placeholder="Date of Birth" />
