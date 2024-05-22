@@ -20,7 +20,7 @@ const SigninForm = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.error("Login failed:", error);
+        console.log(error)
       });
   };
 

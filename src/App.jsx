@@ -22,8 +22,8 @@ const App = () => {
           <Route path="detail/:id" element={<DetailPage />} />
           <Route path="result/:slug" element={<ResultPage />} />
           <Route path="title/:id" element={<TitlePage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="infoUser/:id" element={<InfoUserPage />} />
+          <Route path="update" element={<ProfilePage />} />
+          <Route path="profile" element={<InfoUserPage />} />
         </Route>
         <Route path="/auth" element={<AuthTemplate />}>
           <Route path="signup" element={<SignUpPage />} />

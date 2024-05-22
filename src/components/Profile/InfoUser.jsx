@@ -1,234 +1,182 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../redux/actions/userActions";
+import { Card, Button, Divider, List, Typography, Tag } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
   faLocationDot,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+
+const { Title, Text } = Typography;
+
+const UserInfoCard = ({ info, initial }) => (
+  <Card className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div className="flex items-center justify-center w-44 h-44 bg-gray-500 rounded-full text-white text-3xl mx-auto my-8">
+      <Title level={1} className="text-5xl">
+        {initial}
+      </Title>
+    </div>
+    <Title level={3} className="text-center">
+      {info?.name}
+    </Title>
+    <div className="flex items-center justify-center mt-2">
+      <Button type="link">
+        <NavLink to="/update">
+          <FontAwesomeIcon icon={faPen} />
+        </NavLink>
+      </Button>
+    </div>
+    <Divider />
+    <UserInfoDetail icon={faLocationDot} label="From" value="Vietnam" />
+    <UserInfoDetail icon={faUser} label="Position" value="Member" />
+  </Card>
+);
+
+const UserInfoDetail = ({ icon, label, value }) => (
+  <div className="flex justify-between px-4 py-2">
+    <div className="flex items-center">
+      <FontAwesomeIcon icon={icon} className="mr-2" />
+      <Text>{label}</Text>
+    </div>
+    <Text>{value}</Text>
+  </div>
+);
+
+const UserInfoDetails = ({ info, gender }) => (
+  <Card className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl mt-6">
+    <div className="p-4">
+      <Section title="Description" linkText="Edit Description" />
+      <Section title="Languages" linkText="Add Now" content="Basic - English" />
+      <UserInformation info={info} gender={gender} />
+      <LinkedAccounts />
+    </div>
+  </Card>
+);
+
+const Section = ({ title, linkText, content }) => (
+  <>
+    <div className="flex justify-between items-center">
+      <Text className="font-semibold">{title}</Text>
+      <Button type="link" className="text-blue-400">
+        {linkText}
+      </Button>
+    </div>
+    <Divider />
+    {content && <Text className="mt-6">{content}</Text>}
+  </>
+);
+
+const UserInformation = ({ info, gender }) => (
+  <div className="mt-10">
+    <Title level={4} className="text-center mb-8">
+      User Information
+    </Title>
+    <UserInfoField label="Email" value={info?.email} />
+    <UserInfoField label="Phone" value={info?.phone} />
+    <UserInfoField label="Birthday" value={info?.birthday} />
+    <UserInfoField label="Gender" value={gender} />
+    <UserInfoField label="Role" value={info?.role} />
+    <UserSkillsAndCertifications info={info} />
+  </div>
+);
+
+const UserInfoField = ({ label, value }) => (
+  <div className="flex my-4 mx-2 font-semibold">
+    <Text className="mr-1">{label} : </Text>
+    <Text className="text-gray-500">{value}</Text>
+  </div>
+);
+
+const UserSkillsAndCertifications = ({ info }) => (
+  <>
+    <UserList title="Skills" items={info?.skill} />
+    <UserList title="Certifications" items={info?.certification} />
+  </>
+);
+
+const UserList = ({ title, items }) => (
+  <div className="mt-4 mx-2">
+    <Text className="font-semibold mb-2">{title}</Text>
+    {items?.length > 0 ? (
+      <List
+        dataSource={items}
+        renderItem={(item) => (
+          <List.Item>
+            <Tag>{item}</Tag>
+          </List.Item>
+        )}
+      />
+    ) : (
+      <Text className="text-gray-500"> : No {title.toLowerCase()} listed</Text>
+    )}
+  </div>
+);
+
+const LinkedAccounts = () => {
+  const accounts = [
+    { name: "Facebook", url: "https://facebook.com" },
+    { name: "Google", url: "https://google.com" },
+    { name: "Dribbble", url: "https://dribbble.com" },
+    { name: "Stack Overflow", url: "https://stackoverflow.com" },
+    { name: "Github", url: "https://github.com" },
+    { name: "Twitter", url: "https://twitter.com" },
+  ];
+
+  return (
+    <div className="mt-10">
+      <Title level={4} className="mb-2">
+        Linked Accounts
+      </Title>
+      {accounts.map((account, index) => (
+        <div className="flex mx-4" key={index}>
+          <Button
+            type="link"
+            href={account.url}
+            className="text-blue-400 font-semibold mr-3"
+          >
+            +
+          </Button>
+          <Button type="link" href={account.url} className="text-blue-400">
+            {account.name}
+          </Button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const InfoUser = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const [showInfo, setShowInfo] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfoFetched, setUserInfoFetched] = useState(false);
   const dispatch = useDispatch();
   const { info } = useSelector((state) => state?.auth);
-  console.log("info: ", info);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
-      try {
-        await dispatch(getUserInfo(id));
-        setShowInfo(true);
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
+      if (info && info.id && !userInfoFetched) {
+        try {
+          await dispatch(getUserInfo(info.id));
+          setShowInfo(true);
+          setUserInfoFetched(true);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
     fetchUserInfo();
-  }, [dispatch, id]);
+  }, [dispatch, info, userInfoFetched]);
 
-  useEffect(() => {
-    if (info) {
-      setUserInfo(info);
-    }
-  }, [info]);
-  
   const initial = info?.name ? info.name.charAt(0).toUpperCase() : "";
-  const gender = info?.gender
-    ? info.gender === "male"
-      ? "Male"
-      : "Female"
-    : "";
+  const gender = info?.gender ? (info.gender ? "Male" : "Female") : "";
+
   return (
     <div>
-      <div
-        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl"
-        onClick={() => setShowInfo(!showInfo)}
-        style={{ cursor: "pointer" }}
-      >
-        <div className="flex items-center justify-center w-44 h-44 bg-gray-500 rounded-full text-white text-3xl ml-24 my-8">
-          <h1 style={{ fontSize: "50px" }}>{initial}</h1>
-        </div>
-        <h1 className="block mt-1 text-lg leading-tight font-medium text-black text-center">
-          {info.name}
-        </h1>
-        <h1 className="flex items-center justify-center mt-2">
-          <button>
-            <NavLink to="profile">
-              <FontAwesomeIcon icon={faPen} />
-            </NavLink>
-          </button>
-        </h1>
-        <hr className="mt-10" />
-        <div className="flex justify-between">
-          <div className="flex">
-            <p className="ml-4 mt-2">
-              <FontAwesomeIcon icon={faLocationDot} />
-            </p>
-            <p className="mt-2 ml-2 text-gray-500 text-center">From</p>
-          </div>
-          <div>
-            <p className="mt-2 mr-4 text-gray-500 text-center">Vietnam</p>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <div className="flex">
-            <p className="ml-4 mt-2">
-              <FontAwesomeIcon icon={faUser} />
-            </p>
-            <p className="mt-2 ml-2 text-gray-500 text-center">Position</p>
-          </div>
-          <div>
-            <p className="mt-2 mr-4 text-gray-500 text-center">Member</p>
-          </div>
-        </div>
-      </div>
-
-      {showInfo && (
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl mt-6">
-          <div className="p-4">
-            <div className="flex justify-between mb-10">
-              <p className="mt-6 font-semibold">Description</p>
-              <a href="#" className="mt-6 text-blue-400">
-                Edit Description
-              </a>
-            </div>
-            <hr />
-            <div className="flex justify-between mb-10">
-              <div>
-                <p className="mt-6 mb-2 font-semibold">Languages</p>
-                <p>Basic - English</p>
-              </div>
-              <div className="pt-8">
-                <a href="#" className="text-blue-400">
-                  Add Now
-                </a>
-              </div>
-            </div>
-            <hr />
-            <div className="mt-10">
-              <h2 className="font-semibold text-center mb-8">
-                User Information
-              </h2>
-              <div className="flex my-4 mx-2 font-semibold">
-                <p className="mr-3">Email:</p>
-                <p className="text-gray-500">{info?.email}</p>
-              </div>
-              <div className="flex my-4 mx-2 font-semibold">
-                <p className="mr-3">Phone:</p>
-                <p className="text-gray-500">{info?.phone}</p>
-              </div>
-              <div className="flex my-4 mx-2 font-semibold">
-                <p className="mr-3">Birthday:</p>
-                <p className="text-gray-500">{info?.birthday}</p>
-              </div>
-              <div className="flex my-4 mx-2 font-semibold">
-                <p className="mr-3">Gender:</p>
-                <p className="text-gray-500">{gender}</p>
-              </div>
-              <div className="flex my-4 mx-2 font-semibold">
-                <p className="mr-3">Role:</p>
-                <p className="text-gray-500">{info?.role}</p>
-              </div>
-              <div className="mt-4 mx-2">
-                <p className="font-semibold mb-2">Skills</p>
-                {info?.skill.length > 0 ? (
-                  <ul className="list-disc list-inside text-gray-500">
-                    {info?.skill.map((skill, index) => (
-                      <li key={index}>{skill}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-500">No skills listed</p>
-                )}
-              </div>
-              <div className="mt-4 mx-2">
-                <p className="font-semibold mb-2">Certifications</p>
-                {info?.certification.length > 0 ? (
-                  <ul className="list-disc list-inside text-gray-500">
-                    {info?.certification.map((cert, index) => (
-                      <li key={index}>{cert}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-500">No certifications listed</p>
-                )}
-              </div>
-            </div>
-            <div className="mt-10">
-              <h2 className="font-semibold mb-2">Linked Accounts</h2>
-              <div className="flex mx-4">
-                <a
-                  href="https://facebook.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://facebook.com" className="text-blue-400">
-                  Facebook
-                </a>
-              </div>
-              <div className="flex mx-4">
-                <a
-                  href="https://google.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://google.com" className="text-blue-400">
-                  Google
-                </a>
-              </div>
-              <div className="flex mx-4">
-                <a
-                  href="https://dribbble.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://dribbble.com" className="text-blue-400">
-                  Dribbble
-                </a>
-              </div>
-              <div className="flex mx-4">
-                <a
-                  href="https://stackoverflow.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://stackoverflow.com" className="text-blue-400">
-                  Stack Overflow
-                </a>
-              </div>
-              <div className="flex mx-4">
-                <a
-                  href="https://github.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://github.com" className="text-blue-400">
-                  Github
-                </a>
-              </div>
-              <div className="flex mx-4">
-                <a
-                  href="https://twitter.com"
-                  className="text-blue-400 font-semibold mr-3"
-                >
-                  +
-                </a>
-                <a href="https://twitter.com" className="text-blue-400">
-                  Twitter
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <UserInfoCard info={info} initial={initial} />
+      {showInfo && <UserInfoDetails info={info} gender={gender} />}
     </div>
   );
 };

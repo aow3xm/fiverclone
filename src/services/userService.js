@@ -50,3 +50,18 @@ export const uploadAvatar = async (avatar) => {
     throw error;
   }
 }
+
+export const layDanhSachCongViecDaThue = async (token) => {
+  try {
+    const response = await http.get(`/thue-cong-viec/lay-danh-sach-da-thue`, 
+      {
+        headers:{
+          'token': token
+        }
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -2,33 +2,32 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/actions/userActions";
+import { Avatar } from 'antd';
 
 const UserNavLogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { info } = useSelector((state) => state?.auth);
-  console.log('info: ', info);
-  const initial = info?.name ? info.name.charAt(0).toUpperCase() : "";
-  const navigateUserPage = (id) => {
-    navigate(`infoUser/${id}`);
+  const auth = useSelector((state) => state.auth.info);
+
+  const getInitial = (name) => {
+    return name ? name.charAt(0).toUpperCase() : '';
   };
+
   return (
     <div className="flex items-center">
       <button
         onClick={() => {
-          navigateUserPage(info?.id);
+          navigate("/profile");
         }}
         className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full text-white text-lg mx-2"
       >
-        {initial}
+        {auth?.avatar ? (
+          <Avatar src={auth?.avatar} size={40} />
+        ) : (
+          <span>{getInitial(auth?.name)}</span>
+        )}
       </button>
-      <button
-        onClick={() => {
-          navigateUserPage(info?.id);
-        }}
-      >
-        {info?.name}
-      </button>
+
       <button
         onClick={() => {
           dispatch(logout());

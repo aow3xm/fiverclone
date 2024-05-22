@@ -12,6 +12,7 @@ import {
   UPLOAD_AVATAR_FAILURE,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  GET_RENT_JOBS,
 } from "../actions/userActions";
 
 const initialState = {
@@ -77,6 +78,11 @@ const authReducer = (state = initialState, action) => {
           ...state.info,
           avatar: action.payload,
         },
+      };
+    case GET_RENT_JOBS:
+      return {
+        ...state,
+        rentJobs: action.payload,
       };
     default:
       return state;

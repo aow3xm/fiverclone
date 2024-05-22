@@ -12,18 +12,15 @@ import { jwtDecode } from "jwt-decode";
 
 const HomeTemplate = () => {
   const dispatch = useDispatch();
-  const [token, setToken] = useState(null);
   const user = useSelector((state) => state?.auth?.user);
   useEffect(() => {
     if (user) {
       const jwt = jwtDecode(user);
-      setToken(jwt);
       dispatch(getUserInfo(jwt.id));
     }
   }, [user, dispatch]);
   useEffect(() => {
     const user = userLocal.get();
-
     if (user) {
       dispatch(initUserFromStorage(user));
     }

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import WithResponsive from '../../HOC/Responsive/WithResponsive';
-import Drawer from './Drawer';
-import JobsList from './JobsList';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchJobs } from '../../redux/actions/jobsActions';
-import UserNavLogIn from './UserNavLogIn';
-import UserNavLogOut from './UserNavLogOut';
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import WithResponsive from "../../HOC/Responsive/WithResponsive";
+import Drawer from "./Drawer";
+import JobsList from "./JobsList";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchJobs } from "../../redux/actions/jobsActions";
+import UserNavLogIn from "./UserNavLogIn";
+import UserNavLogOut from "./UserNavLogOut";
 
 const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,7 +18,7 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const authState = useSelector((state) => state.auth);
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const renderUserNav = () => {
     if (user) {
       return <UserNavLogIn />;
@@ -46,17 +46,14 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
 
   useEffect(() => {
     if (authState.user) {
-      console.log(authState)
       try {
         const token = authState.user;
-        if (token && typeof token === 'string') {
+        if (token && typeof token === "string") {
           const decodedToken = jwtDecode(token);
           setUserEmail(decodedToken.email);
-        } else {
-          console.error('Token is not a string or is undefined:', token);
         }
       } catch (error) {
-        console.error('Error decoding token:', error.message);
+        console.log(error);
       }
     }
   }, [authState]);
@@ -112,30 +109,7 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
             )}
           </div>
 
-          <nav className="header-nav order-3 md:order-2">
-            {renderUserNav()}
-            {/* <ul className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-5">
-              <li>
-                <NavLink to="#">Become a Seller</NavLink>
-              </li>
-              {userEmail ? (
-                <li>
-                  <NavLink to="/profile">{userEmail}</NavLink>
-                </li>
-              ) : (
-                <>
-                  <li>
-                    <NavLink to="/auth/signin">Sign In</NavLink>
-                  </li>
-                  <li>
-                    <button className="px-4 py-1 rounded-sm border border-white shadow-md hover:bg-white hover:text-black duration-300">
-                      <NavLink to="/auth/signup">Join</NavLink>
-                    </button>
-                  </li>
-                </>
-              )}
-            </ul> */}
-          </nav>
+          <nav className="header-nav order-3 md:order-2">{renderUserNav()}</nav>
         </div>
       )}
       {(isScrolled || !isHomePage) && isDesktop && <JobsList />}

@@ -4,6 +4,7 @@ import {
   updateProfile,
   getUser,
   uploadAvatar as uploadAvatarService,
+  layDanhSachCongViecDaThue,
 } from "../../services/userService";
 import { message } from "antd";
 import { userLocal } from "../../services/userLocal";
@@ -22,6 +23,7 @@ export const GET_USER_INFO = "GET_USER_INFO";
 export const UPLOAD_AVATAR_REQUEST = "UPLOAD_AVATAR_REQUEST";
 export const UPLOAD_AVATAR_SUCCESS = "UPLOAD_AVATAR_SUCCESS";
 export const UPLOAD_AVATAR_FAILURE = "UPLOAD_AVATAR_FAILURE";
+export const GET_RENT_JOBS = "GET_RENT_JOBS";
 const signupRequest = () => ({ type: SIGNUP_REQUEST });
 const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 const getUserSuccess = (user) => ({ type: GET_USER_INFO, payload: user });
@@ -42,6 +44,8 @@ const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
 const logoutRequest = () => ({ type: LOGOUT_REQUEST });
 const logoutSuccess = () => ({ type: LOGOUT_SUCCESS });
 const logoutFailure = (error) => ({ type: LOGOUT_FAILURE, payload: error });
+
+const getRentJobs = (jobs) => ({ type: GET_RENT_JOBS, payload: jobs });
 export const initUserFromStorage = (user) => ({
   type: INIT_USER_FROM_STORAGE,
   payload: user,
@@ -115,6 +119,17 @@ export const uploadAvatar = (avatar) => {
         error.response?.data?.content || "Upload Avatar Failed";
       dispatch(uploadAvatarFailure(errorMessage));
       message.error(errorMessage);
+    }
+  };
+};
+
+export const getRentJobsAction = (token) => {
+  return async (dispatch) => {
+    try {
+      const response = await layDanhSachCongViecDaThue(token);
+      dispatch(getRentJobs(response.data.content));
+    } catch (error) {
+      message.error("Get Rent Jobs Failed");
     }
   };
 };
