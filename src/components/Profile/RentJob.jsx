@@ -4,16 +4,17 @@ import { Card, Tag, Button } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import ShowEmpty from "../Loading";
-import { getRentJobsAction, removeRentJob } from "../../redux/actions/userActions";
+import { removeRentJob } from "../../redux/actions/userActions";
 
 const RentJob = () => {
   const rentJobs = useSelector((state) => state.auth?.rentJobs);
   const auth = useSelector((state) => state.auth?.user);
   const dispatch = useDispatch();
-  const handleDeleteRentJob =  (job) => {
-     dispatch(removeRentJob(job.id, auth));
 
+  const handleDeleteRentJob = (job) => {
+    dispatch(removeRentJob(job.id, auth));
   };
+
   return (
     <div className="flex flex-col gap-4">
       <h3 className="font-semibold text-3xl">Your rent jobs</h3>
@@ -59,10 +60,7 @@ const RentJob = () => {
                   <NavLink to={`/detail/${job.congViec.id}`}>
                     <Button type="primary">View Details</Button>
                   </NavLink>
-                  <Button
-                    onClick={()=>handleDeleteRentJob(job)}
-                    danger
-                  >
+                  <Button onClick={() => handleDeleteRentJob(job)} danger>
                     Delete
                   </Button>
                 </div>

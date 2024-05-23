@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card, Col, Row, Rate, Avatar, Tag } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ShowEmpty from "../Loading";
+import { pagePaths } from "../../paths";
 
 const { Meta } = Card;
 
@@ -30,7 +31,7 @@ const JobsGrid = () => {
             <Card
               hoverable
               onClick={() => {
-                navigate(`/detail/${job.congViec.id}`);
+                navigate(pagePaths.detail(job.congViec.id));
               }}
               className="flex flex-col h-full"
               cover={

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import SignupForm from "../../components/Auth/SignupForm";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { pagePaths } from "../../paths";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const SignUpPage = () => {
 
   useEffect(() => {
     if (signupState.user && !signupState.isLoading && !signupState.error) {
-      navigate('/auth/signin');
+      navigate(pagePaths.signIn);
     }
   }, [signupState, navigate]);
   return (
@@ -23,7 +24,7 @@ const SignUpPage = () => {
         />
         <p className="text-sm">
           Already have account?
-          <NavLink className="text-blue-400  hover:text-blue-600 " to={"/auth/signin"}> Sign in</NavLink>
+          <NavLink className="text-blue-400  hover:text-blue-600 " to={pagePaths.signIn}> Sign in</NavLink>
         </p>
       </div>
     </div>

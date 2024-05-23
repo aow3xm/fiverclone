@@ -86,13 +86,13 @@ const PageFooter = () => {
       <Divider />
       <div className="container mx-auto px-4">
         <Row gutter={[16, 16]} justify="center">
-          {footerData.map((column, index) => (
+          {footerData?.map((column, index) => (
             <Col xs={24} sm={12} md={8} lg={4} key={index}>
               <h3 className="text-lg font-semibold mb-4 text-center">
                 {column.title}
               </h3>
               <ul className="space-y-2 text-center">
-                {column.links.map((link, linkIndex) => (
+                {column.links?.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     <NavLink
                       to="#"

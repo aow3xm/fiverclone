@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { getUserInfo } from "../../redux/actions/userActions";
 import { Card, Button, Divider, List, Typography, Tag } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -130,7 +130,7 @@ const LinkedAccounts = () => {
       <Title level={4} className="mb-2">
         Linked Accounts
       </Title>
-      {accounts.map((account, index) => (
+      {accounts?.map((account, index) => (
         <div className="flex mx-4" key={index}>
           <Button
             type="link"
@@ -155,10 +155,10 @@ const InfoUser = () => {
   const { info } = useSelector((state) => state?.auth);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchUserInfo =  () => {
       if (info && info.id && !userInfoFetched) {
         try {
-          await dispatch(getUserInfo(info.id));
+          dispatch(getUserInfo(info.id));
           setShowInfo(true);
           setUserInfoFetched(true);
         } catch (error) {

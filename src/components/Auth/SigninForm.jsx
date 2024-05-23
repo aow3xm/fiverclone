@@ -4,24 +4,15 @@ import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/userActions";
-
+import { pagePaths } from "../../paths";
 
 const SigninForm = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
-
-
   const onFinish = (values) => {
-    dispatch(login(values))
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error)
-      });
+    dispatch(login(values));
   };
 
   const validateMessages = {
@@ -66,7 +57,7 @@ const SigninForm = () => {
           </Form.Item>
           <Form.Item>
             <Button type="link">
-              <NavLink to="/auth/signup">Or Sign up</NavLink>
+              <NavLink to={pagePaths.signUp}>Or Sign up</NavLink>
             </Button>
           </Form.Item>
         </div>

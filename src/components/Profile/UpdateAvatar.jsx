@@ -1,35 +1,51 @@
-
-import React, { useState, useEffect } from 'react';
-import { Upload, Avatar, Button } from 'antd';
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { uploadAvatar } from '../../redux/actions/userActions';
+import React, { useState, useEffect } from "react";
+import { Upload, Avatar, Button, message } from "antd";
+import { UploadOutlined, UserOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { BASE_TOKEN } from "../../services/config";
+import {jwtDecode} from "jwt-decode";
+import { getUserInfo } from "../../redux/actions/userActions";
 
 const UploadAvatar = () => {
-  const [imageUrl, setImageUrl] = useState(null);
   const dispatch = useDispatch();
-  const info = useSelector((state) => state?.auth?.info);
+  const userInfo = useSelector((state) => state?.auth?.info);
+  const token = useSelector((state) => state.auth?.user);
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const user = useSelector((state) => state?.auth?.user);
 
   useEffect(() => {
-    if (info && info.avatar) {
-      setImageUrl(info.avatar);
+    if (user) {
+      const jwt = jwtDecode(user);
+      dispatch(getUserInfo(jwt.id));
     }
-  }, [info]);
+  }, [user, dispatch]);
 
-  const handleChange = info => {
-    if (info.file.status === 'done') {
-
-      getBase64(info.file.originFileObj, imageUrl => {
-        setImageUrl(imageUrl);
-        dispatch(uploadAvatar(info.file.originFileObj));
-      });
+  useEffect(() => {
+    if (userInfo && userInfo.avatar) {
+      setAvatarUrl(userInfo.avatar);
     }
+  }, [userInfo]);
+
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+    }
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (!isLt1M) {
+      message.error("Image must be smaller than 1MB!");
+    }
+    return isImage && isLt1M;
   };
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
+  const handleUploadChange = (info) => {
+    if (info.file.status === "done") {
+      message.success("Your image updated successfully");
+      setAvatarUrl(URL.createObjectURL(info.file.originFileObj));
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+      console.log(info.file.response);
+    }
   };
 
   return (
@@ -38,15 +54,21 @@ const UploadAvatar = () => {
         <Avatar
           size={150}
           icon={<UserOutlined />}
-          src={imageUrl}
+          src={avatarUrl}
           className="mb-6"
         />
         <Upload
-          name="avatar"
-          listType="picture"
+          multiple={false}
+          name="formFile"
           className="upload-list-inline"
           showUploadList={false}
-          onChange={handleChange}
+          beforeUpload={beforeUpload}
+          onChange={handleUploadChange}
+          action="https://fiverrnew.cybersoft.edu.vn/api/users/upload-avatar"
+          headers={{
+            token: token,
+            tokenCybersoft: BASE_TOKEN,
+          }}
         >
           <Button type="primary" size="large" icon={<UploadOutlined />}>
             Upload Avatar

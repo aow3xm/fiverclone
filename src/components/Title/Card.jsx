@@ -26,7 +26,7 @@ const JobTitleCard = ({ data }) => {
           Explore {tenLoaiCongViec}
         </h3>
         <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-          {dsNhomChiTietLoai.map((nhom) => (
+          {dsNhomChiTietLoai?.map((nhom) => (
             <div key={nhom.id} className="flex flex-col w-60 lg:w-80">
               <div className="w-full h-40 overflow-hidden rounded-lg">
                 <img
@@ -39,7 +39,7 @@ const JobTitleCard = ({ data }) => {
                 <h4 className="mt-2 text-lg font-semibold text-gray-700 p-2">
                   {nhom.tenNhom.slice(0, 20)}
                 </h4>
-                {nhom.dsChiTietLoai.map((chiTiet) => (
+                {nhom.dsChiTietLoai?.map((chiTiet) => (
                   <Link
                     key={chiTiet.id}
                     to={`/categories/${chiTiet.id}`}

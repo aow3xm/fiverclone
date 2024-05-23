@@ -18,12 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import {
   getUserInfo,
-  initUserFromStorage,
   updateUser,
 } from "../../redux/actions/userActions";
 import { jwtDecode } from "jwt-decode";
-import { userLocal } from "../../services/userLocal";
-import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Carousel as AntdCarousel } from "antd";
 import { useNavigate } from "react-router-dom";
 import styles from "./Carousel.module.css";
+import { pagePaths } from "../../../paths";
 
 const Carousel = ({ carouselImages, popularSearches, partnerLogos }) => {
   const [search, setSearch] = useState("");
@@ -10,7 +11,7 @@ const Carousel = ({ carouselImages, popularSearches, partnerLogos }) => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (search) {
-      navigate(`/result/${search}`);
+      navigate(pagePaths.result(search));
     }
   };
 

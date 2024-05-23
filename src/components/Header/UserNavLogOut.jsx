@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { pagePaths } from '../../paths'
 
 const UserNavLogOut = () => {
   return (
@@ -10,11 +11,11 @@ const UserNavLogOut = () => {
                 <NavLink to="#">Become a Seller</NavLink>
               </li>
               <li>
-                <NavLink to="/auth/signin">Sign In</NavLink>
+                <NavLink to={pagePaths.signIn}>Sign In</NavLink>
               </li>
               <li>
                 <button className="px-4 py-1 rounded-sm border border-white shadow-md hover:bg-white hover:text-black duration-300">
-                  <NavLink to="/auth/signup">Join</NavLink>
+                  <NavLink to={pagePaths.signUp}>Join</NavLink>
                 </button>
               </li>
             </ul>

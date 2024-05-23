@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import WithResponsive from "../../HOC/Responsive/WithResponsive";
 import Drawer from "./Drawer";
 import JobsList from "./JobsList";
@@ -8,16 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchJobs } from "../../redux/actions/jobsActions";
 import UserNavLogIn from "./UserNavLogIn";
 import UserNavLogOut from "./UserNavLogOut";
+import { pagePaths } from "../../paths";
 
 const Header = ({ isMobile, isTablet, isDesktop }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
   const dispatch = useDispatch();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const authState = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
   const renderUserNav = () => {
     if (user) {
@@ -44,23 +42,9 @@ const Header = ({ isMobile, isTablet, isDesktop }) => {
     };
   }, [dispatch]);
 
-  useEffect(() => {
-    if (authState.user) {
-      try {
-        const token = authState.user;
-        if (token && typeof token === "string") {
-          const decodedToken = jwtDecode(token);
-          setUserEmail(decodedToken.email);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [authState]);
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/result/${search}`);
+    navigate(pagePaths.result(search));
   };
 
   return (

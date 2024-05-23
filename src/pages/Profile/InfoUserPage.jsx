@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import InfoUser from "../../components/Profile/InfoUser";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLocal } from "../../services/userLocal";
 import {
   getRentJobsAction,
   initUserFromStorage,
 } from "../../redux/actions/userActions";
 import RentJob from "../../components/Profile/RentJob";
+import { pagePaths } from "../../paths";
 
 const InfoUserPage = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const InfoUserPage = () => {
       dispatch(initUserFromStorage(user));
       dispatch(getRentJobsAction(user));
     } else {
-      navigate("/auth/signin");
+      navigate(pagePaths.signIn);
     }
   }, [dispatch, navigate]);
 

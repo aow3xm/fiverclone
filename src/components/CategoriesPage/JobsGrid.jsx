@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card, Col, Row, Rate, Avatar, Tag } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import ShowEmpty from "../Loading";
+import { pagePaths } from "../../paths";
 
 const { Meta } = Card;
 
@@ -25,11 +26,19 @@ const JobsGrid = () => {
     <div className="container mx-auto">
       <Row gutter={[16, 16]} className="flex flex-wrap">
         {jobsCategories?.map((job) => (
-          <Col key={job.id} xs={24} sm={12} md={8} lg={8} xl={6} className="flex">
+          <Col
+            key={job.id}
+            xs={24}
+            sm={12}
+            md={8}
+            lg={8}
+            xl={6}
+            className="flex"
+          >
             <Card
               hoverable
               onClick={() => {
-                navigate(`/detail/${job.congViec.id}`);
+                navigate(pagePaths.detail(job.congViec.id));
               }}
               className="flex flex-col h-full"
               cover={

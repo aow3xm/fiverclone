@@ -3,7 +3,6 @@ import {
   signUp,
   updateProfile,
   getUser,
-  uploadAvatar as uploadAvatarService,
   layDanhSachCongViecDaThue,
 } from "../../services/userService";
 import { message } from "antd";
@@ -21,23 +20,10 @@ export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 export const INIT_USER_FROM_STORAGE = "INIT_USER_FROM_STORAGE";
 export const GET_USER_INFO = "GET_USER_INFO";
-export const UPLOAD_AVATAR_REQUEST = "UPLOAD_AVATAR_REQUEST";
-export const UPLOAD_AVATAR_SUCCESS = "UPLOAD_AVATAR_SUCCESS";
-export const UPLOAD_AVATAR_FAILURE = "UPLOAD_AVATAR_FAILURE";
 export const GET_RENT_JOBS = "GET_RENT_JOBS";
-
 const signupRequest = () => ({ type: SIGNUP_REQUEST });
 const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 const getUserSuccess = (user) => ({ type: GET_USER_INFO, payload: user });
-const uploadAvatarRequest = () => ({ type: UPLOAD_AVATAR_REQUEST });
-const uploadAvatarSuccess = (avatarUrl) => ({
-  type: UPLOAD_AVATAR_SUCCESS,
-  payload: avatarUrl,
-});
-const uploadAvatarFailure = (error) => ({
-  type: UPLOAD_AVATAR_FAILURE,
-  payload: error,
-});
 
 const loginRequest = () => ({ type: LOGIN_REQUEST });
 const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
@@ -52,7 +38,6 @@ export const initUserFromStorage = (user) => ({
   type: INIT_USER_FROM_STORAGE,
   payload: user,
 });
-
 // Thunks
 export const login = (data) => {
   return async (dispatch) => {
@@ -60,7 +45,6 @@ export const login = (data) => {
     try {
       const response = await signIn(data);
       const user = response.data.content;
-      console.log(user);
       dispatch(loginSuccess(user));
       message.success("Login Successful");
       userLocal.set(user.token);
@@ -108,22 +92,6 @@ export const getUserInfo = (id) => {
   };
 };
 
-export const uploadAvatar = (avatar) => {
-  return async (dispatch) => {
-    dispatch(uploadAvatarRequest());
-    try {
-      const response = await uploadAvatarService(avatar);
-      const avatarUrl = response.data.content.avatarUrl; // Giả sử API trả về URL của avatar trong `content.avatarUrl`
-      dispatch(uploadAvatarSuccess(avatarUrl));
-      message.success("Upload Avatar Successful");
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.content || "Upload Avatar Failed";
-      dispatch(uploadAvatarFailure(errorMessage));
-      message.error(errorMessage);
-    }
-  };
-};
 
 export const getRentJobsAction = (token) => {
   return async (dispatch) => {

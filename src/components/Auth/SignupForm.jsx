@@ -9,15 +9,12 @@ import {
 } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { signup } from "../../redux/actions/userActions";
-
+import { pagePaths } from "../../paths";
 
 const SignupForm = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-
-
 
   const onFinish = (values) => {
     const formattedValues = {
@@ -35,7 +32,7 @@ const SignupForm = () => {
 
     dispatch(signup(formattedValues))
       .then(() => {
-        navigate('/auth/signin');
+        navigate(pagePaths.signIn);
       })
       .catch((error) => {
         console.error(error);

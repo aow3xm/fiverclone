@@ -36,32 +36,18 @@ export const getUser = async (id) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
-export const uploadAvatar = async (avatar) => {
+
+export const layDanhSachCongViecDaThue = async (token) => {
   try {
-    const response = await http.post("/users/upload-avatar", avatar, {
+    const response = await http.get(`/thue-cong-viec/lay-danh-sach-da-thue`, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        token: token,
       },
     });
     return response;
   } catch (error) {
     throw error;
   }
-}
-
-export const layDanhSachCongViecDaThue = async (token) => {
-  try {
-    const response = await http.get(`/thue-cong-viec/lay-danh-sach-da-thue`, 
-      {
-        headers:{
-          'token': token
-        }
-      }
-    );
-    return response;
-  } catch (error) {
-    throw error;
-  }
-}
+};
