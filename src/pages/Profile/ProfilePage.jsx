@@ -23,7 +23,7 @@ const ProfilePage = () => {
   }, [dispatch, navigate]);
 
   return (
-    <div className="container mx-auto flex justify-center gap-5">
+    <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-center gap-5">
       <UploadAvatar />
       <UserUpdateForm />
     </div>

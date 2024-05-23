@@ -7,19 +7,12 @@ import {
   Radio,
   Typography,
   Divider,
+  Tag,
 } from "antd";
-import {
-  UserOutlined,
-  MailOutlined,
-  LockOutlined,
-  PhoneOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import {
-  getUserInfo,
-  updateUser,
-} from "../../redux/actions/userActions";
+import { getUserInfo, updateUser } from "../../redux/actions/userActions";
 import { jwtDecode } from "jwt-decode";
 
 const { Title } = Typography;
@@ -31,6 +24,12 @@ const UserUpdateForm = () => {
   const dispatch = useDispatch();
   const [token, setToken] = useState(null);
   const user = useSelector((state) => state?.auth?.user);
+
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+  const [certifications, setCertifications] = useState([]);
+  const [newCertification, setNewCertification] = useState("");
+
   useEffect(() => {
     if (user) {
       const jwt = jwtDecode(user);
@@ -45,22 +44,44 @@ const UserUpdateForm = () => {
         ...info,
         birthday: moment(info.birthday),
       });
+      setSkills(info.skill || []);
+      setCertifications(info.certification || []);
     }
-  }, [info, form]);
+  }, []); 
 
   const onFinish = (values) => {
     const formattedValues = {
       id: token.id,
       ...values,
       birthday: values.birthday.format("YYYY-MM-DD"),
-      skill: values.skill
-        ? values.skill.split(",").map((skill) => skill.trim())
-        : [],
-      certification: values.certification
-        ? values.certification.split(",").map((cert) => cert.trim())
-        : [],
+      skill: skills,
+      certification: certifications,
     };
     dispatch(updateUser(token.id, formattedValues));
+  };
+
+  const handleAddSkill = () => {
+    if (newSkill.trim() !== "") {
+      setSkills([...skills, newSkill.trim()]);
+      setNewSkill("");
+    }
+  };
+
+  const handleRemoveSkill = (skill) => {
+    const updatedSkills = skills.filter((s) => s !== skill);
+    setSkills(updatedSkills);
+  };
+
+  const handleAddCertification = () => {
+    if (newCertification.trim() !== "") {
+      setCertifications([...certifications, newCertification.trim()]);
+      setNewCertification("");
+    }
+  };
+
+  const handleRemoveCertification = (cert) => {
+    const updatedCertifications = certifications.filter((c) => c !== cert);
+    setCertifications(updatedCertifications);
   };
 
   return (
@@ -80,25 +101,8 @@ const UserUpdateForm = () => {
             <Input prefix={<UserOutlined />} placeholder="Name" />
           </Form.Item>
 
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { type: "email", message: "The input is not valid E-mail!" },
-              { required: true, message: "Please input your E-mail!" },
-            ]}
-            style={{ flex: "1 1 45%" }}
-          >
-            <Input prefix={<MailOutlined />} placeholder="Email" />
-          </Form.Item>
-
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: false }]}
-            style={{ flex: "1 1 45%" }}
-          >
-            <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          <Form.Item name="email" label="Email" style={{ flex: "1 1 45%" }}>
+            <Input prefix={<MailOutlined />} placeholder="Email" disabled />
           </Form.Item>
 
           <Form.Item
@@ -151,16 +155,54 @@ const UserUpdateForm = () => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item name="skill" label="Skill" style={{ flex: "1 1 45%" }}>
-            <Input placeholder="Skill (comma separated)" />
+          <Form.Item name="skill" label="Skill" initialValue={info?.skill}>
+            <Input.Group compact>
+              <Input
+                style={{ width: "calc(100% - 60px)" }}
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                placeholder="Enter a skill"
+              />
+              <Button type="primary" onClick={handleAddSkill}>
+                Add
+              </Button>
+            </Input.Group>
+            <div>
+              {skills?.map((skill, index) => (
+                <Tag
+                  key={index}
+                  closable
+                  onClose={() => handleRemoveSkill(skill)}
+                >
+                  {skill}
+                </Tag>
+              ))}
+            </div>
           </Form.Item>
 
-          <Form.Item
-            name="certification"
-            label="Certification"
-            style={{ flex: "1 1 45%" }}
-          >
-            <Input placeholder="Certification (comma separated)" />
+          <Form.Item name="certification" label="Certification" initialValue={info?.certification}>
+            <Input.Group compact>
+              <Input
+                style={{ width: "calc(100% - 60px)" }}
+                value={newCertification}
+                onChange={(e) => setNewCertification(e.target.value)}
+                placeholder="Enter a certification"
+              />
+              <Button type="primary" onClick={handleAddCertification}>
+                Add
+              </Button>
+            </Input.Group>
+            <div>
+              {certifications?.map((cert, index) => (
+                <Tag
+                  key={index}
+                  closable
+                  onClose={() => handleRemoveCertification(cert)}
+                >
+                  {cert}
+                </Tag>
+              ))}
+            </div>
           </Form.Item>
         </div>
 

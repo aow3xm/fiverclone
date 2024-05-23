@@ -11,8 +11,8 @@ import {
 import { jwtDecode } from "jwt-decode";
 
 const HomeTemplate = () => {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state?.auth?.user);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
       const jwt = jwtDecode(user);

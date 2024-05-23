@@ -44,9 +44,7 @@ const AdminTemplate = () => {
   }, [info, user, navigate]);
   return (
     <div>
-      <Header />
       <Outlet />
-      <PageFooter />
     </div>
   );
 };

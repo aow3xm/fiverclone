@@ -14,15 +14,10 @@ const UploadAvatar = () => {
   const user = useSelector((state) => state?.auth?.user);
 
   useEffect(() => {
-    if (user) {
-      const jwt = jwtDecode(user);
-      dispatch(getUserInfo(jwt.id));
-    }
-  }, [user, dispatch]);
-
-  useEffect(() => {
     if (userInfo && userInfo.avatar) {
       setAvatarUrl(userInfo.avatar);
+        const jwt = jwtDecode(user);
+        dispatch(getUserInfo(jwt.id));
     }
   }, [userInfo]);
 

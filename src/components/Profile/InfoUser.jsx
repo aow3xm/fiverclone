@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getUserInfo } from "../../redux/actions/userActions";
-import { Card, Button, Divider, List, Typography, Tag } from "antd";
+import { Card, Button, Divider, List, Typography, Tag, Avatar } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -12,13 +12,20 @@ import {
 
 const { Title, Text } = Typography;
 
+
 const UserInfoCard = ({ info, initial }) => (
-  <Card className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-    <div className="flex items-center justify-center w-44 h-44 bg-gray-500 rounded-full text-white text-3xl mx-auto my-8">
-      <Title level={1} className="text-5xl">
-        {initial}
-      </Title>
-    </div>
+  <Card className="max-w-md mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl">
+    {info?.avatar ? (
+     <div className="flex justify-center items-center">
+       <Avatar size={128} src={info.avatar} className="mx-auto my-8" />
+     </div>
+    ) : (
+      <div className="flex items-center justify-center w-44 h-44 bg-gray-500 rounded-full text-white text-3xl mx-auto my-8">
+        <Title level={1} className="text-5xl">
+          {initial}
+        </Title>
+      </div>
+    )}
     <Title level={3} className="text-center">
       {info?.name}
     </Title>
@@ -34,7 +41,6 @@ const UserInfoCard = ({ info, initial }) => (
     <UserInfoDetail icon={faUser} label="Position" value="Member" />
   </Card>
 );
-
 const UserInfoDetail = ({ icon, label, value }) => (
   <div className="flex justify-between px-4 py-2">
     <div className="flex items-center">
@@ -146,19 +152,17 @@ const LinkedAccounts = () => {
       ))}
     </div>
   );
-};
-
-const InfoUser = () => {
+};const InfoUser = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [userInfoFetched, setUserInfoFetched] = useState(false);
   const dispatch = useDispatch();
   const { info } = useSelector((state) => state?.auth);
 
   useEffect(() => {
-    const fetchUserInfo =  () => {
+    const fetchUserInfo = async () => {
       if (info && info.id && !userInfoFetched) {
         try {
-          dispatch(getUserInfo(info.id));
+          await dispatch(getUserInfo(info.id));
           setShowInfo(true);
           setUserInfoFetched(true);
         } catch (error) {
@@ -170,7 +174,7 @@ const InfoUser = () => {
     fetchUserInfo();
   }, [dispatch, info, userInfoFetched]);
 
-  const initial = info?.name ? info.name.charAt(0).toUpperCase() : "";
+  const initial = info?.name.charAt(0).toUpperCase();
   const gender = info?.gender ? (info.gender ? "Male" : "Female") : "";
 
   return (
