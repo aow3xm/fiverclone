@@ -8,6 +8,7 @@ import {
 } from "../../services/userService";
 import { message } from "antd";
 import { userLocal } from "../../services/userLocal";
+import { thueCongViec, xoaCongViec } from "../../services/jobsService";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -24,6 +25,7 @@ export const UPLOAD_AVATAR_REQUEST = "UPLOAD_AVATAR_REQUEST";
 export const UPLOAD_AVATAR_SUCCESS = "UPLOAD_AVATAR_SUCCESS";
 export const UPLOAD_AVATAR_FAILURE = "UPLOAD_AVATAR_FAILURE";
 export const GET_RENT_JOBS = "GET_RENT_JOBS";
+
 const signupRequest = () => ({ type: SIGNUP_REQUEST });
 const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 const getUserSuccess = (user) => ({ type: GET_USER_INFO, payload: user });
@@ -145,6 +147,27 @@ export const logout = () => {
       const errorMessage = error.message || "Logout Failed";
       dispatch(logoutFailure(errorMessage));
       message.error(errorMessage);
+    }
+  };
+};
+
+export const rentJob = (data, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await thueCongViec(data, token);
+      message.success(response.message);
+    } catch (error) {
+      message.error("Rent Job Failed");
+    }
+  };
+};
+export const removeRentJob = (id, token) => {
+  return async (dispatch) => {
+    try {
+      await xoaCongViec(id, token);
+      dispatch(getRentJobsAction(token));
+    } catch (error) {
+      console.error(error);
     }
   };
 };

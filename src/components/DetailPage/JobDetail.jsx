@@ -12,6 +12,7 @@ import {
   Collapse,
   Row,
   Col,
+  message,
 } from "antd";
 import {
   InfoCircleOutlined,
@@ -20,6 +21,8 @@ import {
 } from "@ant-design/icons";
 import Loading from "../Loading";
 import Comment from "./Comment";
+import { rentJob } from "../../redux/actions/userActions";
+import { jwtDecode } from "jwt-decode";
 
 const { Meta } = Card;
 const { Panel } = Collapse;
@@ -27,8 +30,8 @@ const { Panel } = Collapse;
 const JobDetail = ({ faqData }) => {
   const dispatch = useDispatch();
   const params = useParams();
-  const jobDetail = useSelector((state) => state.jobs.jobDetail);
-
+  const jobDetail = useSelector((state) => state.jobs?.jobDetail);
+  const auth = useSelector((state)=>state.auth?.user)
   useEffect(() => {
     dispatch(fetchJobDetail(params.id));
   }, [dispatch, params.id]);
@@ -37,7 +40,19 @@ const JobDetail = ({ faqData }) => {
     return <Loading />;
   }
   const job = jobDetail[0];
-
+  const handleRentJob = ()=>{
+    if(!auth){
+      message.error('You must be signed in to rent job')
+      return;
+    }
+    const token = jwtDecode(auth);
+    const data = {
+      maCongViec: params.id, 
+      maNguoiThue: token.id, 
+      ngayThue: new Date()
+    }
+    dispatch(rentJob(data, auth))
+  }
   return (
     <div className="container mx-auto p-4">
       <Row gutter={[16, 16]}>
@@ -121,7 +136,7 @@ const JobDetail = ({ faqData }) => {
                   <span>Unlimited Revisions</span>
                 </div>
               </div>
-              <Button type="primary"  size="large" block>
+              <Button onClick={handleRentJob} type="primary"  size="large" block>
                 <span className="font-bold">
                   Continue (${job.congViec.giaTien})
                 </span>

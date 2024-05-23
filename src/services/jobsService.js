@@ -52,3 +52,29 @@ export const layChiTietLoaiCongViec = async (maChiTietLoai) => {
     console.error(error);
   }
 }
+
+export const thueCongViec = async (data, token)=>{
+  try {
+    const response = await http.post(`thue-cong-viec`,data, {
+      headers:{
+        'token': token
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const xoaCongViec = async (maCongViec, token)=>{
+  try {
+    const response = await http.delete(`thue-cong-viec/${maCongViec}`,{
+      headers:{
+        'token': token
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

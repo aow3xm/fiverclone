@@ -4,6 +4,7 @@ import {
   layCongViecTheoChiTietLoai,
   layCongViecTheoTen,
   layDanhSachCongViec,
+  xoaCongViec,
 } from "../../services/jobsService";
 
 export const FETCH_JOBS_REQUEST = "jobs/fetchJobsRequest";
@@ -36,10 +37,12 @@ export const fetchDetailJobSuccess = (job) => ({
   type: FETCH_DETAIL_JOB_SUCCESS,
   payload: job,
 });
+
 export const fetchJobTitleSucess = (job) => ({
   type: FETCH_JOB_TITLE_SUCCESS,
   payload: job,
 });
+
 export const fetchJobs = () => {
   return async (dispatch) => {
     dispatch(fetchJobsRequest());
@@ -61,7 +64,7 @@ export const fetchJobTitle = (id) => {
       console.error(error);
     }
   };
-}
+};
 
 export const fetchJobsCategories = (id) => {
   return async (dispatch) => {
@@ -96,3 +99,4 @@ export const fetchJobResult = (tenCongViec) => {
     }
   };
 };
+
