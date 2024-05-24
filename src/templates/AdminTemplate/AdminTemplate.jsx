@@ -29,13 +29,11 @@ const AdminTemplate = () => {
   useEffect(() => {
     if (user) {
       const jwt = jwtDecode(user);
-      console.log(jwt);
       dispatch(getUserInfo(jwt.id));
     }
   }, [user, dispatch]);
   useEffect(() => {
     if (info) {
-      console.log(info?.role);
       if (!info?.role || info?.role != "ADMIN") {
         navigate(pagePaths.signIn);
         message.error("Unauthorized");

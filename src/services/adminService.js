@@ -5,7 +5,7 @@ export const layDanhSachUser = async () => {
     const response = await http.get("users");
     return response.data.content;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -18,12 +18,20 @@ export const xoaUser = async (id) => {
   }
 };
 
+export const capNhatUser = async (data) => {
+  try {
+    const response = await http.put(`users/${data.id}`, data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
 export const layDanhSachJob = async () => {
   try {
     const response = await http.get("cong-viec");
     return response.data.content;
   } catch (error) {
-    throw error.response.data;
+    return error.response.data;
   }
 };
 export const xoaJob = async (id, token) => {
@@ -52,3 +60,65 @@ export const themJob = async (job, token) => {
     return error.response.data;
   }
 };
+
+export const layDanhSachLoaiCongViec = async () => {
+  try {
+    const response = await http.get("loai-cong-viec");
+    return response.data.content;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const layDanhSachThueCongViec = async ()=>{
+  try {
+    const response = await http.get("thue-cong-viec");
+    return response.data.content;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const capNhatThueCongViec = async (service, token) => {
+  try {
+    const response = await http.put(`thue-cong-viec/${service.id}`, service, {
+      headers: {
+        'token': token
+      }
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+export const layDanhSachBinhLuan = async ()=>{
+  try {
+    const response = await http.get("binh-luan");
+    return response.data.content;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+export const xoaBinhLuan = async (id, token) => {
+  try {
+    const response = await http.delete(`binh-luan/${id}`, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return error.response.data;
+  }
+}
+
+export const timBinhLuanTheoId = async (id) => {
+  try {
+    const response = await http.get(`binh-luan/lay-binh-luan-theo-cong-viec/${id}`);
+    return response.data.content;
+  } catch (error) {
+    return error.response.data;
+  }
+}
