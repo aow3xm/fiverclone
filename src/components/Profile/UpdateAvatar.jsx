@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_TOKEN } from "../../services/config";
 import {jwtDecode} from "jwt-decode";
 import { getUserInfo } from "../../redux/actions/userActions";
+import { useNavigate } from "react-router-dom";
+import { pagePaths } from "../../paths";
 
 const UploadAvatar = () => {
   const dispatch = useDispatch();
@@ -12,7 +14,7 @@ const UploadAvatar = () => {
   const token = useSelector((state) => state.auth?.user);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const user = useSelector((state) => state?.auth?.user);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (userInfo && userInfo.avatar) {
       setAvatarUrl(userInfo.avatar);
@@ -34,12 +36,18 @@ const UploadAvatar = () => {
   };
 
   const handleUploadChange = (info) => {
-    if (info.file.status === "done") {
-      message.success("Your image updated successfully");
-      setAvatarUrl(URL.createObjectURL(info.file.originFileObj));
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      console.log(info.file.response);
+    if(user){
+      if (info.file.status === "done") {
+        message.success("Your image updated successfully");
+        setAvatarUrl(URL.createObjectURL(info.file.originFileObj));
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+        console.log(info.file.response);
+      }
+    }
+    else{
+      navigate(pagePaths.signIn)
+      message.error("You must be signed in to update your avatar");
     }
   };
 

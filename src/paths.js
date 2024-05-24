@@ -6,4 +6,5 @@ export const pagePaths = {
     categories: (id) => `/categories/${id}`,
     title: (id) => `/title/${id}`,
     profile: '/profile',
+    admin: '/admin/dashboard',
 }

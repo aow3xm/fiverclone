@@ -38,14 +38,14 @@ const Carousel = ({ carouselImages, popularSearches, partnerLogos }) => {
           <div className="flex flex-col sm:flex-row w-full lg:w-3/5">
             <form onSubmit={handleSearchSubmit} className="flex w-full">
               <input
-                className="focus:outline-none rounded-t-md sm:rounded-l-md sm:rounded-r-none p-3 w-full sm:w-2/3 h-10 sm:h-12 text-black"
+                className="focus:outline-none rounded-l-md sm:rounded-r-none  p-3 w-full sm:w-2/3 h-10 sm:h-12 text-black"
                 type="text"
                 placeholder="Try 'Mobile app'"
                 onChange={(e) => setSearch(e.target.value)}
               />
               <button
                 type="submit"
-                className="rounded-b-md sm:rounded-r-md sm:rounded-l-none px-4 h-10 sm:h-12 bg-green-700 hover:bg-green-800 duration-300 font-bold"
+                className="rounded-b-md rounded-r-md rounded-l-none px-4 h-10 sm:h-12 bg-green-700 hover:bg-green-800 duration-300 font-bold"
               >
                 Search
               </button>

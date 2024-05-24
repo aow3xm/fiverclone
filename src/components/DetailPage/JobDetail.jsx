@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchJobDetail } from "../../redux/actions/jobsActions";
 import {
@@ -23,6 +23,7 @@ import Loading from "../Loading";
 import Comment from "./Comment";
 import { rentJob } from "../../redux/actions/userActions";
 import { jwtDecode } from "jwt-decode";
+import { pagePaths } from "../../paths";
 
 const { Meta } = Card;
 const { Panel } = Collapse;
@@ -31,7 +32,8 @@ const JobDetail = ({ faqData }) => {
   const dispatch = useDispatch();
   const params = useParams();
   const jobDetail = useSelector((state) => state.jobs?.jobDetail);
-  const auth = useSelector((state)=>state.auth?.user)
+  const auth = useSelector((state) => state.auth?.user);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchJobDetail(params.id));
   }, [dispatch, params.id]);
@@ -40,19 +42,20 @@ const JobDetail = ({ faqData }) => {
     return <Loading />;
   }
   const job = jobDetail[0];
-  const handleRentJob = ()=>{
-    if(!auth){
-      message.error('You must be signed in to rent job')
+  const handleRentJob = () => {
+    if (!auth) {
+      message.error("You must be signed in to rent job");
+      navigate(pagePaths.signIn);
       return;
     }
     const token = jwtDecode(auth);
     const data = {
-      maCongViec: params.id, 
-      maNguoiThue: token.id, 
-      ngayThue: new Date()
-    }
-    dispatch(rentJob(data, auth))
-  }
+      maCongViec: params.id,
+      maNguoiThue: token.id,
+      ngayThue: new Date(),
+    };
+    dispatch(rentJob(data, auth));
+  };
   return (
     <div className="container mx-auto p-4">
       <Row gutter={[16, 16]}>
@@ -108,7 +111,9 @@ const JobDetail = ({ faqData }) => {
                 <Avatar size={"large"} src={job.avatar} />
                 <div className="flex flex-col">
                   <span className="font-bold">{job.tenNguoiTao}</span>
-                  <Button size="large" className="mt-2">Contact me</Button>
+                  <Button size="large" className="mt-2">
+                    Contact me
+                  </Button>
                 </div>
               </div>
             </Panel>
@@ -136,7 +141,7 @@ const JobDetail = ({ faqData }) => {
                   <span>Unlimited Revisions</span>
                 </div>
               </div>
-              <Button onClick={handleRentJob} type="primary"  size="large" block>
+              <Button onClick={handleRentJob} type="primary" size="large" block>
                 <span className="font-bold">
                   Continue (${job.congViec.giaTien})
                 </span>

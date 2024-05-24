@@ -12,13 +12,12 @@ import {
 
 const { Title, Text } = Typography;
 
-
 const UserInfoCard = ({ info, initial }) => (
   <Card className="max-w-md mx-auto rounded-xl  shadow-md overflow-hidden md:max-w-2xl">
     {info?.avatar ? (
-     <div className="flex justify-center items-center">
-       <Avatar size={128} src={info.avatar} className="mx-auto my-8" />
-     </div>
+      <div className="flex justify-center items-center">
+        <Avatar size={128} src={info.avatar} className="mx-auto my-8" />
+      </div>
     ) : (
       <div className="flex items-center justify-center w-44 h-44 bg-gray-500 rounded-full text-white text-3xl mx-auto my-8">
         <Title level={1} className="text-5xl">
@@ -152,7 +151,8 @@ const LinkedAccounts = () => {
       ))}
     </div>
   );
-};const InfoUser = () => {
+};
+const InfoUser = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [userInfoFetched, setUserInfoFetched] = useState(false);
   const dispatch = useDispatch();
@@ -175,8 +175,8 @@ const LinkedAccounts = () => {
   }, [dispatch, info, userInfoFetched]);
 
   const initial = info?.name.charAt(0).toUpperCase();
-  const gender = info?.gender ? (info.gender ? "Male" : "Female") : "";
-
+  const gender =
+    info?.gender !== undefined ? (info.gender ? "Male" : "Female") : "";
   return (
     <div>
       <UserInfoCard info={info} initial={initial} />

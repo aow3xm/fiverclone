@@ -8,12 +8,20 @@ import {
   Typography,
   Divider,
   Tag,
+  message,
 } from "antd";
 import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { getUserInfo, updateUser } from "../../redux/actions/userActions";
+import {
+  getUserInfo,
+  initUserFromStorage,
+  updateUser,
+} from "../../redux/actions/userActions";
 import { jwtDecode } from "jwt-decode";
+import { userLocal } from "../../services/userLocal";
+import { pagePaths } from "../../paths";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -24,7 +32,7 @@ const UserUpdateForm = () => {
   const dispatch = useDispatch();
   const [token, setToken] = useState(null);
   const user = useSelector((state) => state?.auth?.user);
-
+  const navigate = useNavigate();
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
   const [certifications, setCertifications] = useState([]);
@@ -47,17 +55,23 @@ const UserUpdateForm = () => {
       setSkills(info.skill || []);
       setCertifications(info.certification || []);
     }
-  }, []); 
+  }, []);
 
   const onFinish = (values) => {
-    const formattedValues = {
-      id: token.id,
-      ...values,
-      birthday: values.birthday.format("YYYY-MM-DD"),
-      skill: skills,
-      certification: certifications,
-    };
-    dispatch(updateUser(token.id, formattedValues));
+    if (user) {
+      const formattedValues = {
+        id: token.id,
+        ...values,
+        birthday: values.birthday.format("YYYY-MM-DD"),
+        skill: skills,
+        certification: certifications,
+      };
+      dispatch(updateUser(token.id, formattedValues));
+    }
+    else{
+      navigate(pagePaths.signIn);
+      message.error("You must be signed in to update your profile");
+    }
   };
 
   const handleAddSkill = () => {
@@ -180,7 +194,11 @@ const UserUpdateForm = () => {
             </div>
           </Form.Item>
 
-          <Form.Item name="certification" label="Certification" initialValue={info?.certification}>
+          <Form.Item
+            name="certification"
+            label="Certification"
+            initialValue={info?.certification}
+          >
             <Input.Group compact>
               <Input
                 style={{ width: "calc(100% - 60px)" }}

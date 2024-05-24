@@ -1,18 +1,24 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Tag, Button } from "antd";
+import { Card, Tag, Button, message } from "antd";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ShowEmpty from "../Loading";
 import { removeRentJob } from "../../redux/actions/userActions";
+import { pagePaths } from "../../paths";
 
 const RentJob = () => {
   const rentJobs = useSelector((state) => state.auth?.rentJobs);
   const auth = useSelector((state) => state.auth?.user);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleDeleteRentJob = (job) => {
-    dispatch(removeRentJob(job.id, auth));
+    if (auth) {
+      dispatch(removeRentJob(job.id, auth));
+    } else {
+      navigate(pagePaths.signIn);
+      message.error("You must be signed in to delete a rent job");
+    }
   };
 
   return (
@@ -56,7 +62,7 @@ const RentJob = () => {
                 </span>
               </div>
               <div className="flex justify-between items-center mt-2">
-                <div className="space-x-2">
+                <div className="space-y-2 lg:space-y-0 lg:space-x-2">
                   <NavLink to={`/detail/${job.congViec.id}`}>
                     <Button type="primary">View Details</Button>
                   </NavLink>
