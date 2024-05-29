@@ -8,6 +8,7 @@ import {
   Input,
   Modal,
   Form,
+  Upload,
 } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -29,6 +30,7 @@ import {
 } from "../../services/adminService";
 import { NavLink } from "react-router-dom";
 import { pagePaths } from "../../paths";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
 
@@ -44,6 +46,7 @@ const AdminDashboard = () => {
   const [isAddCategoryVisible, setIsAddCategoryVisible] = useState(false);
   const [jobForm] = Form.useForm();
   const [categoryForm] = Form.useForm();
+  const [fileList, setFileList] = useState([]);
   const [currentTab, setCurrentTab] = useState("1");
   const auth = useSelector((state) => state.auth?.info);
   const token = useSelector((state) => state.auth?.user);
@@ -218,6 +221,11 @@ const AdminDashboard = () => {
 
   const handleAddJobFinish = async (values) => {
     try {
+      if (fileList.length > 0) {
+        values.hinhAnh = fileList[0].thumbUrl;
+      } else {
+        values.hinhAnh = null;
+      }
       const response = await themJob(values, token);
       if (response.statusCode !== 201) {
         message.error(response.content);
@@ -249,43 +257,97 @@ const AdminDashboard = () => {
     }
   };
 
-  const AddJobForm = () => (
-    <Modal
-      title="Thêm công việc"
-      visible={isAddJobVisible}
-      onCancel={() => setIsAddJobVisible(false)}
-      footer={null}
-    >
-      <Form form={jobForm} layout="vertical" onFinish={handleAddJobFinish}>
-        <Form.Item
-          label="Tên công việc"
-          name="tenCongViec"
-          rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Hình ảnh"
-          name="hinhAnh"
-          rules={[{ required: true, message: "Vui lòng nhập link hình ảnh" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Mô tả ngắn"
-          name="moTaNgan"
-          rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Thêm công việc
-          </Button>
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
+  // const AddJobForm = () => (
+  //   <Modal
+  //     title="Thêm công việc"
+  //     visible={isAddJobVisible}
+  //     onCancel={() => setIsAddJobVisible(false)}
+  //     footer={null}
+  //   >
+  //     <Form form={jobForm} layout="vertical" onFinish={handleAddJobFinish}>
+  //       <Form.Item
+  //         label="Tên công việc"
+  //         name="tenCongViec"
+  //         rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
+  //       >
+  //         <Input />
+  //       </Form.Item>
+  //       <Form.Item
+  //         label="Hình ảnh"
+  //         name="hinhAnh"
+  //         rules={[{ required: true, message: "Vui lòng nhập link hình ảnh" }]}
+  //       >
+  //         <Input />
+  //       </Form.Item>
+  //       <Form.Item
+  //         label="Mô tả ngắn"
+  //         name="moTaNgan"
+  //         rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+  //       >
+  //         <Input />
+  //       </Form.Item>
+  //       <Form.Item>
+  //         <Button type="primary" htmlType="submit">
+  //           Thêm công việc
+  //         </Button>
+  //       </Form.Item>
+  //     </Form>
+  //   </Modal>
+  // );
+  const AddJobForm = () => {
+
+
+    const handleUploadChange = ({ fileList }) => {
+      setFileList(fileList);
+    };
+
+
+    return (
+      <Modal
+        title="Thêm công việc"
+        visible={isAddJobVisible}
+        onCancel={() => setIsAddJobVisible(false)}
+        footer={null}
+      >
+        <Form form={jobForm} layout="vertical" onFinish={handleAddJobFinish}>
+          <Form.Item
+            label="Tên công việc"
+            name="tenCongViec"
+            rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Hình ảnh"
+            name="hinhAnh"
+            rules={[{ required: true, message: "Vui lòng tải lên hình ảnh" }]}
+          >
+            <Upload
+              name="logo"
+              listType="picture"
+              beforeUpload={() => false}
+              fileList={fileList}
+              onChange={handleUploadChange}
+            >
+              <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+            </Upload>
+          </Form.Item>
+          <Form.Item
+            label="Mô tả ngắn"
+            name="moTaNgan"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Thêm công việc
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    );
+  };
 
   const AddCategoryForm = () => (
     <Modal
@@ -481,7 +543,6 @@ const AdminDashboard = () => {
       <AddCategoryForm />
     </Content>
   );
-  
 
   const ServicesTable = () => (
     <Content style={{ margin: "16px" }}>

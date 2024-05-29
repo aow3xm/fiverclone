@@ -139,12 +139,11 @@ export const timBinhLuanTheoId = async (id) => {
 
 export const xoaLoaiCongViec = async (categoryId, token) => {
   try {
-    const response = await axios.delete(`loai-cong-viec/${categoryId}`, {
+    const response = await http.delete(`loai-cong-viec/${categoryId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
-    console.log(error.response);
     return {
       statusCode: error.response?.status || 500,
       content: error.response?.data?.message || "Đã xảy ra lỗi",
