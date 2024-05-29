@@ -21,7 +21,7 @@ const Drawer = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
+    navigate("/");
     onClose();
   };
 
@@ -46,10 +46,10 @@ const Drawer = () => {
         ) : (
           <div className="flex flex-col gap-3">
             <NavLink to={pagePaths.signIn} onClick={onClose}>
-              Đăng nhập
+              Sign in
             </NavLink>
             <NavLink to={pagePaths.signUp} onClick={onClose}>
-              Đăng ký
+              Sign up
             </NavLink>
           </div>
         )}

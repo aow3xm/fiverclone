@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/actions/userActions";
-import { Avatar } from 'antd';
+import { Avatar } from "antd";
 import { pagePaths } from "../../paths";
 
 const UserNavLogIn = () => {
@@ -11,7 +11,7 @@ const UserNavLogIn = () => {
   const auth = useSelector((state) => state.auth.info);
 
   const getInitial = (name) => {
-    return name ? name.charAt(0).toUpperCase() : '';
+    return name ? name.charAt(0).toUpperCase() : "";
   };
 
   return (
@@ -32,12 +32,13 @@ const UserNavLogIn = () => {
       <button
         onClick={() => {
           dispatch(logout());
-          navigate('/')
+          navigate("/");
         }}
         className="px-4 py-1 rounded-sm border border-white shadow-md hover:bg-white hover:text-black duration-300 mx-4"
       >
         Log Out
       </button>
+      <NavLink to={pagePaths.admin}>Admin area</NavLink>
     </div>
   );
 };

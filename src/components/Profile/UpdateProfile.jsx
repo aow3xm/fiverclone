@@ -67,8 +67,7 @@ const UserUpdateForm = () => {
         certification: certifications,
       };
       dispatch(updateUser(token.id, formattedValues));
-    }
-    else{
+    } else {
       navigate(pagePaths.signIn);
       message.error("You must be signed in to update your profile");
     }
@@ -154,18 +153,6 @@ const UserUpdateForm = () => {
             <Radio.Group>
               <Radio value={true}>Male</Radio>
               <Radio value={false}>Female</Radio>
-            </Radio.Group>
-          </Form.Item>
-
-          <Form.Item
-            name="role"
-            label="Role"
-            rules={[{ required: true, message: "Please select your role!" }]}
-            style={{ flex: "1 1 45%" }}
-          >
-            <Radio.Group>
-              <Radio value="USER">User</Radio>
-              <Radio value="ADMIN">Admin</Radio>
             </Radio.Group>
           </Form.Item>
 

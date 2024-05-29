@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import { Layout, Menu, Table, Button, Avatar, message, Input } from "antd";
-=======
 import {
   Layout,
   Menu,
@@ -12,7 +9,6 @@ import {
   Modal,
   Form,
 } from "antd";
->>>>>>> origin/branch3
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -27,12 +23,9 @@ import {
   timBinhLuanTheoId,
   capNhatUser,
   capNhatThueCongViec,
-<<<<<<< HEAD
-=======
   themJob,
   themLoaiCongViec,
   xoaLoaiCongViec,
->>>>>>> origin/branch3
 } from "../../services/adminService";
 import { NavLink } from "react-router-dom";
 import { pagePaths } from "../../paths";
@@ -47,14 +40,10 @@ const AdminDashboard = () => {
   const [comments, setComments] = useState([]);
   const [searchJobId, setSearchJobId] = useState("");
   const [searchedComments, setSearchedComments] = useState([]);
-<<<<<<< HEAD
-
-=======
   const [isAddJobVisible, setIsAddJobVisible] = useState(false);
   const [isAddCategoryVisible, setIsAddCategoryVisible] = useState(false);
   const [jobForm] = Form.useForm();
   const [categoryForm] = Form.useForm();
->>>>>>> origin/branch3
   const [currentTab, setCurrentTab] = useState("1");
   const auth = useSelector((state) => state.auth?.info);
   const token = useSelector((state) => state.auth?.user);
@@ -140,10 +129,6 @@ const AdminDashboard = () => {
       console.error(error);
     }
   };
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/branch3
   const handleDeleteJob = async (jobId) => {
     try {
       const response = await xoaJob(jobId, token);
@@ -158,8 +143,6 @@ const AdminDashboard = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const handleDeleteCategory = async (categoryId) => {
     try {
       const response = await xoaLoaiCongViec(categoryId, token);
@@ -175,7 +158,6 @@ const AdminDashboard = () => {
     }
   };
 
->>>>>>> origin/branch3
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await xoaBinhLuan(commentId, token);
@@ -226,8 +208,6 @@ const AdminDashboard = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const showAddJobForm = () => {
     setIsAddJobVisible(true);
   };
@@ -337,7 +317,6 @@ const AdminDashboard = () => {
     </Modal>
   );
 
->>>>>>> origin/branch3
   const UsersTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -395,16 +374,12 @@ const AdminDashboard = () => {
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360 }}
       >
-<<<<<<< HEAD
-        <Button type="primary" ghost style={{ marginBottom: 16 }}>
-=======
         <Button
           type="primary"
           ghost
           style={{ marginBottom: 16 }}
           onClick={showAddJobForm}
         >
->>>>>>> origin/branch3
           Thêm công việc
         </Button>
         <Table
@@ -451,31 +426,22 @@ const AdminDashboard = () => {
           />
         </Table>
       </div>
-<<<<<<< HEAD
-    </Content>
-  );
-=======
       <AddJobForm />
     </Content>
   );
 
->>>>>>> origin/branch3
   const CategoriesTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360 }}
       >
-<<<<<<< HEAD
-        <Button type="primary" ghost style={{ marginBottom: 16 }}>
-=======
         <Button
           type="primary"
           ghost
           style={{ marginBottom: 16 }}
           onClick={showAddCategoryForm}
         >
->>>>>>> origin/branch3
           Thêm loại công việc
         </Button>
         <Table
@@ -494,13 +460,6 @@ const AdminDashboard = () => {
             title="Hành động"
             key="action"
             render={(text, record) => (
-<<<<<<< HEAD
-              <Button type="primary">
-                <a target="_blank" href={pagePaths.categories(record.id)}>
-                  Chi tiết
-                </a>
-              </Button>
-=======
               <div className="flex gap-2">
                 <Button type="primary">
                   <a target="_blank" href={pagePaths.categories(record.id)}>
@@ -515,21 +474,15 @@ const AdminDashboard = () => {
                   Xoá
                 </Button>
               </div>
->>>>>>> origin/branch3
             )}
           />
         </Table>
       </div>
-<<<<<<< HEAD
-    </Content>
-  );
-=======
       <AddCategoryForm />
     </Content>
   );
   
 
->>>>>>> origin/branch3
   const ServicesTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -569,15 +522,9 @@ const AdminDashboard = () => {
               <Button
                 onClick={() => handleChangeRentStatus(record)}
                 type="primary"
-<<<<<<< HEAD
-                
-              >
-                Đánh dấu là {record.hoanThanh ? "Chưa hoàn thành" : "Đã hoàn thành"}
-=======
               >
                 Đánh dấu là{" "}
                 {record.hoanThanh ? "Chưa hoàn thành" : "Đã hoàn thành"}
->>>>>>> origin/branch3
               </Button>
             )}
           />
@@ -585,10 +532,6 @@ const AdminDashboard = () => {
       </div>
     </Content>
   );
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/branch3
   const CommentsTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -602,10 +545,6 @@ const AdminDashboard = () => {
             onChange={(e) => setSearchJobId(e.target.value)}
             style={{ width: 200, marginRight: 8 }}
           />
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/branch3
           <Button type="primary" onClick={handleFindCommentByJobId}>
             Tìm kiếm
           </Button>
@@ -655,10 +594,6 @@ const AdminDashboard = () => {
       </div>
     </Content>
   );
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/branch3
   const renderContent = () => {
     switch (currentTab) {
       case "1":

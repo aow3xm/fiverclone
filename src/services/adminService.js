@@ -1,3 +1,4 @@
+import axios from "axios";
 import { http } from "./config";
 
 export const layDanhSachUser = async () => {
@@ -70,8 +71,6 @@ export const layDanhSachLoaiCongViec = async () => {
   }
 };
 
-<<<<<<< HEAD
-=======
 export const themLoaiCongViec = async (category, token) => {
   try {
     const response = await http.post("loai-cong-viec", category, {
@@ -85,7 +84,6 @@ export const themLoaiCongViec = async (category, token) => {
   }
 };
 
->>>>>>> origin/branch3
 export const layDanhSachThueCongViec = async ()=>{
   try {
     const response = await http.get("thue-cong-viec");
@@ -137,9 +135,6 @@ export const timBinhLuanTheoId = async (id) => {
   } catch (error) {
     return error.response.data;
   }
-<<<<<<< HEAD
-}
-=======
 }
 
 export const xoaLoaiCongViec = async (categoryId, token) => {
@@ -156,4 +151,3 @@ export const xoaLoaiCongViec = async (categoryId, token) => {
     };
   }
 };
->>>>>>> origin/branch3
