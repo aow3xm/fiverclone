@@ -1,4 +1,18 @@
+<<<<<<< HEAD
 import { Layout, Menu, Table, Button, Avatar, message, Input } from "antd";
+=======
+import {
+  Layout,
+  Menu,
+  Table,
+  Button,
+  Avatar,
+  message,
+  Input,
+  Modal,
+  Form,
+} from "antd";
+>>>>>>> origin/branch3
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -13,6 +27,12 @@ import {
   timBinhLuanTheoId,
   capNhatUser,
   capNhatThueCongViec,
+<<<<<<< HEAD
+=======
+  themJob,
+  themLoaiCongViec,
+  xoaLoaiCongViec,
+>>>>>>> origin/branch3
 } from "../../services/adminService";
 import { NavLink } from "react-router-dom";
 import { pagePaths } from "../../paths";
@@ -27,7 +47,14 @@ const AdminDashboard = () => {
   const [comments, setComments] = useState([]);
   const [searchJobId, setSearchJobId] = useState("");
   const [searchedComments, setSearchedComments] = useState([]);
+<<<<<<< HEAD
 
+=======
+  const [isAddJobVisible, setIsAddJobVisible] = useState(false);
+  const [isAddCategoryVisible, setIsAddCategoryVisible] = useState(false);
+  const [jobForm] = Form.useForm();
+  const [categoryForm] = Form.useForm();
+>>>>>>> origin/branch3
   const [currentTab, setCurrentTab] = useState("1");
   const auth = useSelector((state) => state.auth?.info);
   const token = useSelector((state) => state.auth?.user);
@@ -113,6 +140,10 @@ const AdminDashboard = () => {
       console.error(error);
     }
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/branch3
   const handleDeleteJob = async (jobId) => {
     try {
       const response = await xoaJob(jobId, token);
@@ -127,6 +158,24 @@ const AdminDashboard = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleDeleteCategory = async (categoryId) => {
+    try {
+      const response = await xoaLoaiCongViec(categoryId, token);
+      if (response.statusCode === 403) {
+        message.error(response.content);
+        return;
+      }
+      message.success(`Loại công việc ${categoryId} đã được xoá`);
+      fetchCategories();
+    } catch (error) {
+      console.error(error);
+      message.error("Đã xảy ra lỗi khi xoá loại công việc");
+    }
+  };
+
+>>>>>>> origin/branch3
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await xoaBinhLuan(commentId, token);
@@ -177,6 +226,118 @@ const AdminDashboard = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  const showAddJobForm = () => {
+    setIsAddJobVisible(true);
+  };
+
+  const showAddCategoryForm = () => {
+    setIsAddCategoryVisible(true);
+  };
+
+  const handleAddJobFinish = async (values) => {
+    try {
+      const response = await themJob(values, token);
+      if (response.statusCode !== 201) {
+        message.error(response.content);
+        return;
+      }
+      message.success("Công việc đã được thêm");
+      setIsAddJobVisible(false);
+      jobForm.resetFields();
+      fetchJobs();
+    } catch (error) {
+      console.error("Failed to add job:", error);
+    }
+  };
+
+  const handleAddCategoryFinish = async (values) => {
+    console.log(token);
+    try {
+      const response = await themLoaiCongViec(values, token);
+      if (response.statusCode !== 201) {
+        message.error(response.content);
+        return;
+      }
+      message.success("Loại công việc đã được thêm");
+      setIsAddCategoryVisible(false);
+      categoryForm.resetFields();
+      fetchCategories();
+    } catch (error) {
+      console.error("Failed to add category:", error);
+    }
+  };
+
+  const AddJobForm = () => (
+    <Modal
+      title="Thêm công việc"
+      visible={isAddJobVisible}
+      onCancel={() => setIsAddJobVisible(false)}
+      footer={null}
+    >
+      <Form form={jobForm} layout="vertical" onFinish={handleAddJobFinish}>
+        <Form.Item
+          label="Tên công việc"
+          name="tenCongViec"
+          rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Hình ảnh"
+          name="hinhAnh"
+          rules={[{ required: true, message: "Vui lòng nhập link hình ảnh" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Mô tả ngắn"
+          name="moTaNgan"
+          rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Thêm công việc
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+
+  const AddCategoryForm = () => (
+    <Modal
+      title="Thêm loại công việc"
+      visible={isAddCategoryVisible}
+      onCancel={() => setIsAddCategoryVisible(false)}
+      footer={null}
+    >
+      <Form
+        form={categoryForm}
+        layout="vertical"
+        onFinish={handleAddCategoryFinish}
+      >
+        <Form.Item
+          label="Tên loại công việc"
+          name="tenLoaiCongViec"
+          rules={[
+            { required: true, message: "Vui lòng nhập tên loại công việc" },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Thêm loại công việc
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+
+>>>>>>> origin/branch3
   const UsersTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -234,7 +395,16 @@ const AdminDashboard = () => {
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360 }}
       >
+<<<<<<< HEAD
         <Button type="primary" ghost style={{ marginBottom: 16 }}>
+=======
+        <Button
+          type="primary"
+          ghost
+          style={{ marginBottom: 16 }}
+          onClick={showAddJobForm}
+        >
+>>>>>>> origin/branch3
           Thêm công việc
         </Button>
         <Table
@@ -281,15 +451,31 @@ const AdminDashboard = () => {
           />
         </Table>
       </div>
+<<<<<<< HEAD
     </Content>
   );
+=======
+      <AddJobForm />
+    </Content>
+  );
+
+>>>>>>> origin/branch3
   const CategoriesTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360 }}
       >
+<<<<<<< HEAD
         <Button type="primary" ghost style={{ marginBottom: 16 }}>
+=======
+        <Button
+          type="primary"
+          ghost
+          style={{ marginBottom: 16 }}
+          onClick={showAddCategoryForm}
+        >
+>>>>>>> origin/branch3
           Thêm loại công việc
         </Button>
         <Table
@@ -308,17 +494,42 @@ const AdminDashboard = () => {
             title="Hành động"
             key="action"
             render={(text, record) => (
+<<<<<<< HEAD
               <Button type="primary">
                 <a target="_blank" href={pagePaths.categories(record.id)}>
                   Chi tiết
                 </a>
               </Button>
+=======
+              <div className="flex gap-2">
+                <Button type="primary">
+                  <a target="_blank" href={pagePaths.categories(record.id)}>
+                    Chi tiết
+                  </a>
+                </Button>
+                <Button
+                  onClick={() => handleDeleteCategory(record.id)}
+                  type="default"
+                  danger
+                >
+                  Xoá
+                </Button>
+              </div>
+>>>>>>> origin/branch3
             )}
           />
         </Table>
       </div>
+<<<<<<< HEAD
     </Content>
   );
+=======
+      <AddCategoryForm />
+    </Content>
+  );
+  
+
+>>>>>>> origin/branch3
   const ServicesTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -358,9 +569,15 @@ const AdminDashboard = () => {
               <Button
                 onClick={() => handleChangeRentStatus(record)}
                 type="primary"
+<<<<<<< HEAD
                 
               >
                 Đánh dấu là {record.hoanThanh ? "Chưa hoàn thành" : "Đã hoàn thành"}
+=======
+              >
+                Đánh dấu là{" "}
+                {record.hoanThanh ? "Chưa hoàn thành" : "Đã hoàn thành"}
+>>>>>>> origin/branch3
               </Button>
             )}
           />
@@ -368,6 +585,10 @@ const AdminDashboard = () => {
       </div>
     </Content>
   );
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/branch3
   const CommentsTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
@@ -381,7 +602,10 @@ const AdminDashboard = () => {
             onChange={(e) => setSearchJobId(e.target.value)}
             style={{ width: 200, marginRight: 8 }}
           />
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/branch3
           <Button type="primary" onClick={handleFindCommentByJobId}>
             Tìm kiếm
           </Button>
@@ -431,6 +655,10 @@ const AdminDashboard = () => {
       </div>
     </Content>
   );
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/branch3
   const renderContent = () => {
     switch (currentTab) {
       case "1":

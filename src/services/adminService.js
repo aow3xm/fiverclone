@@ -70,6 +70,22 @@ export const layDanhSachLoaiCongViec = async () => {
   }
 };
 
+<<<<<<< HEAD
+=======
+export const themLoaiCongViec = async (category, token) => {
+  try {
+    const response = await http.post("loai-cong-viec", category, {
+      headers: {
+        token: token,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+>>>>>>> origin/branch3
 export const layDanhSachThueCongViec = async ()=>{
   try {
     const response = await http.get("thue-cong-viec");
@@ -121,4 +137,23 @@ export const timBinhLuanTheoId = async (id) => {
   } catch (error) {
     return error.response.data;
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+export const xoaLoaiCongViec = async (categoryId, token) => {
+  try {
+    const response = await axios.delete(`loai-cong-viec/${categoryId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+    return {
+      statusCode: error.response?.status || 500,
+      content: error.response?.data?.message || "Đã xảy ra lỗi",
+    };
+  }
+};
+>>>>>>> origin/branch3
