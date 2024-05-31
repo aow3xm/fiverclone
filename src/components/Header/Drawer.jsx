@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer as AntdDrawer, Button } from "antd";
+import { Drawer as AntdDrawer, Avatar, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -32,25 +32,77 @@ const Drawer = () => {
       </button>
       <AntdDrawer placement="left" width={300} onClose={onClose} open={open}>
         {auth?.user ? (
-          <div className="flex flex-col gap-3 items-start">
-            <NavLink to={pagePaths.profile} onClick={onClose}>
-              {auth?.info?.email}
-            </NavLink>
-            <Button danger onClick={handleLogout}>
-              Sign out
-            </Button>
-            <Button type="primary">
-              <NavLink to={pagePaths.admin}>Go to admin dashboard</NavLink>
-            </Button>
+          <div className="flex flex-col gap-3 items-start w-full">
+            <div
+              onClick={() => {
+                navigate(pagePaths.profile);
+              }}
+              className="flex gap-2 items-center cursor-pointer w-full"
+            >
+              <Avatar src={auth?.info?.avatar}></Avatar>
+              <NavLink
+                to={pagePaths.profile}
+                onClick={onClose}
+                className="w-full"
+              >
+                {auth?.info?.email}
+              </NavLink>
+            </div>
+            <div className="flex gap-2">
+              <Button danger onClick={handleLogout}>
+                Sign out
+              </Button>
+              <Button type="primary">
+                <NavLink to={pagePaths.admin} className="w-full">
+                  Admin dashboard
+                </NavLink>
+              </Button>
+            </div>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Explore</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Messages</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">List</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Orders</span>
+            </button>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            <NavLink to={pagePaths.signIn} onClick={onClose}>
-              Sign in
-            </NavLink>
-            <NavLink to={pagePaths.signUp} onClick={onClose}>
-              Sign up
-            </NavLink>
+          <div className="flex flex-col gap-2 w-full">
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <NavLink
+                className="text-gray-600 w-full"
+                to={pagePaths.signIn}
+                onClick={onClose}
+              >
+                <span className="text-gray-600 text-lg">Sign in</span>
+              </NavLink>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <NavLink
+                className="text-gray-600 w-full"
+                to={pagePaths.signUp}
+                onClick={onClose}
+              >
+                <span className="text-gray-600 text-lg">Sign up</span>
+              </NavLink>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Explore</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Messages</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">List</span>
+            </button>
+            <button className="hover:bg-gray-200 duration-200 p-3 rounded font-bold text-left border-b w-full">
+              <span className="text-gray-600 text-lg">Orders</span>
+            </button>
           </div>
         )}
       </AntdDrawer>
