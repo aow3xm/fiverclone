@@ -50,6 +50,8 @@ const AdminDashboard = () => {
   const [currentTab, setCurrentTab] = useState("1");
   const auth = useSelector((state) => state.auth?.info);
   const token = useSelector((state) => state.auth?.user);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -103,6 +105,9 @@ const AdminDashboard = () => {
     fetchServices();
     fetchComments();
   }, [fetchUsers, fetchJobs, fetchCategories, fetchServices, fetchComments]);
+  useEffect(() => {
+    handleSearch();
+  }, [users]);
 
   const handleDeleteUser = async (userId) => {
     try {
@@ -339,14 +344,34 @@ const AdminDashboard = () => {
     </Modal>
   );
 
+  const handleSearch = () => {
+    const results = users.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(results);
+  };
+  const SearchBar = () => (
+    <div style={{ marginBottom: "16px" }}>
+      <Input
+        placeholder="Tìm kiếm người dùng theo tên"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ width: "300px", marginRight: "8px" }}
+      />
+      <Button type="primary" onClick={handleSearch}>
+        Tìm kiếm
+      </Button>
+    </div>
+  );
   const UsersTable = () => (
     <Content style={{ margin: "16px" }}>
       <div
         className="site-layout-background"
         style={{ padding: 24, minHeight: 360 }}
       >
+        <SearchBar />
         <Table
-          dataSource={users}
+          dataSource={filteredUsers.length > 0 ? filteredUsers : users}
           pagination={{ showSizeChanger: true }}
           style={{ backgroundColor: "#fff", color: "#000" }}
           rowKey="id"
