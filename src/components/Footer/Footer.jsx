@@ -82,7 +82,7 @@ const PageFooter = () => {
   ];
 
   return (
-    <div className=" py-10">
+    <div className="container mx-auto py-10">
       <Divider />
       <div className="container mx-auto px-4">
         <Row gutter={[16, 16]} justify="center">
@@ -128,7 +128,7 @@ const PageFooter = () => {
               </NavLink>
             </div>
             <div className="flex gap-3 items-center">
-              <NavLink to={'#'} className="flex items-center gap-1">
+              <NavLink to={"#"} className="flex items-center gap-1">
                 <TransactionOutlined className="text-xl" /> English
               </NavLink>
               <p>US$ USD</p>

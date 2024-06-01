@@ -63,7 +63,8 @@ export const signup = (data) => {
       await signUp(data);
       message.success("Signup Successful");
     } catch (error) {
-      const errorMessage = error.message || "Signup Failed";
+      console.log(error);
+      const errorMessage = error.response.data.content || "Signup Failed";
       dispatch(signupFailure(errorMessage));
       message.error(errorMessage);
     }
@@ -91,7 +92,6 @@ export const getUserInfo = (id) => {
     }
   };
 };
-
 
 export const getRentJobsAction = (token) => {
   return async (dispatch) => {
