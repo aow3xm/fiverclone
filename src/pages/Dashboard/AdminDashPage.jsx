@@ -257,50 +257,10 @@ const AdminDashboard = () => {
     }
   };
 
-  // const AddJobForm = () => (
-  //   <Modal
-  //     title="Thêm công việc"
-  //     visible={isAddJobVisible}
-  //     onCancel={() => setIsAddJobVisible(false)}
-  //     footer={null}
-  //   >
-  //     <Form form={jobForm} layout="vertical" onFinish={handleAddJobFinish}>
-  //       <Form.Item
-  //         label="Tên công việc"
-  //         name="tenCongViec"
-  //         rules={[{ required: true, message: "Vui lòng nhập tên công việc" }]}
-  //       >
-  //         <Input />
-  //       </Form.Item>
-  //       <Form.Item
-  //         label="Hình ảnh"
-  //         name="hinhAnh"
-  //         rules={[{ required: true, message: "Vui lòng nhập link hình ảnh" }]}
-  //       >
-  //         <Input />
-  //       </Form.Item>
-  //       <Form.Item
-  //         label="Mô tả ngắn"
-  //         name="moTaNgan"
-  //         rules={[{ required: true, message: "Vui lòng nhập mô tả" }]}
-  //       >
-  //         <Input />
-  //       </Form.Item>
-  //       <Form.Item>
-  //         <Button type="primary" htmlType="submit">
-  //           Thêm công việc
-  //         </Button>
-  //       </Form.Item>
-  //     </Form>
-  //   </Modal>
-  // );
   const AddJobForm = () => {
-
-
     const handleUploadChange = ({ fileList }) => {
       setFileList(fileList);
     };
-
 
     return (
       <Modal
