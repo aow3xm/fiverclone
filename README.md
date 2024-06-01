@@ -20,10 +20,6 @@ Dự án fiverr clone là một nền tảng kết nối giữa người bán d�
 1. Giao diện người dùng (User Template) do Xuân Minh phụ trách.
 2. Giao diện quản trị viên (Admin Template) do Mai Hoàng phụ trách.
 
-## Hướng dẫn cài đặt và sử dụng
-
-(Phần này sẽ bao gồm các hướng dẫn cài đặt và sử dụng dự án, tùy thuộc vào các công nghệ và framework mà nhóm bạn sử dụng.)
-
 ## Liên hệ
 
 Nếu có bất kỳ câu hỏi hoặc góp ý nào về dự án, vui lòng liên hệ với chúng tôi qua email:
