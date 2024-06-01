@@ -29,4 +29,4 @@ Dự án fiverr clone là một nền tảng kết nối giữa người bán d�
 Nếu có bất kỳ câu hỏi hoặc góp ý nào về dự án, vui lòng liên hệ với chúng tôi qua email:
 
 - Mai Hoàng: [ssc.grayyyyy@gmail.com](mailto:ssc.grayyyyy@gmail.com)
-- Xuân Minh: [ssc.grayyyyy@gmail.com](mailto:ssc.grayyyyy@gmail.com)
+- Xuân Minh: [phamminh.aow3@gmail.com](mailto:phamminh.aow3@gmail.com)
